@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatToRead - Porque todo livro possui seu par perfeito</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Whisper&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Whisper&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Pacifico&family=Whisper&display=swap" rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        background-color: #5a5a5a;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        font-family: "Whisper", cursive;
+        font-weight: 400;
+        font-style: normal;
+        font-size: xx-large;
+        background-image: url("arrangement-with-books-cup.jpg"); /* Coloque aqui a URL da imagem de fundo */
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 20px; /* Ajuste o padding conforme necessário */
+        text-align: center;
+        position: relative;
+        height: 100vh; /* Faz com que o header ocupe 100% da altura da tela */
+        display: flex;
+        flex-direction: row; /* Alinha os elementos na vertical */
+        justify-content: center;
+        align-items: center; /* Centraliza o texto vertical e horizontalmente */
+        overflow: hidden; /* Garante que nada saia do header */
+        box-sizing: border-box; /* Inclui padding e bordas na altura total */
+      }
+
+      header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.6
+        ); /* Adiciona um overlay escuro para melhorar a legibilidade */
+        z-index: 1;
+      }
+
+      .recomendacoes {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), 
+        url("book-grab.jpg");
+        background-size: cover;
+        background-position: center 70%;
+      }
+
+      .assinatura {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)),
+        url("book-coffee.jpg");
+        background-size: cover;
+        background-position: center 50%;
+      }
+
+      .experts {
+        background-color: #F5F5DC;
+      }
+
+
+      header h1,
+      header p {
+        margin: 1em;
+        position: relative;
+        z-index: 2; /* Garante que o texto esteja acima do overlay */
+      }
+
+      section {
+        padding: 40px 20px;
+        max-width: 100%;
+        margin: 0;
+      }
+
+      .trailer {
+        display: flex;
+        flex-wrap: wrap; /* Permite que as divs se movam para a linha seguinte, se necessário */
+        gap: 20px; /* Espaço entre as divs */
+        justify-content: space-evenly; /* Centraliza as divs no container */
+        padding: 20px;
+      }
+
+      .book-container,
+      .expert-container {
+        position: relative;
+        display: inline-block; /* Para que a imagem e a sobreposição fiquem juntas */
+      }
+
+      .book-image,
+      .expert-image {
+        display: block;
+        width: 300px; /* Ajuste conforme necessário */
+        height: 450px; /* Mantém a proporção da imagem */
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.5
+        ); /* Faixa escura com 50% de opacidade */
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0; /* Começa invisível */
+        transition: opacity 0.3s ease; /* Transição suave */
+      }
+
+      .book-container:hover .overlay,
+      .expert-container:hover .overlay {
+        opacity: 1; /* Torna a sobreposição visível ao passar o mouse */
+      }
+
+      .overlay-text {
+        text-align: center;
+        font-size: 1.2em; /* Ajuste conforme necessário */
+        padding: 10px;
+      }
+
+      .forms {
+        background-color:  #4a0606;
+        border-radius: 20px;
+        padding: 1em;
+        opacity: 80%;
+      }
+
+      h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        font-size: 2em;
+        color: white;
+      }
+
+      .recomendacoes>h2,
+      .assinatura>div>h2,
+      .experts>h2,
+      .assinatura>div>p {
+        font-family: "Pacifico", cursive;
+        font-style: normal;
+        color:  #4a0606;
+      }
+
+      .recomendacoes>h2,
+      .assinatura>h2 {
+        font-weight: 900;
+        font-size: xx-large;
+      }
+
+      p {
+        font-size: 1.2em;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        color: rgb(193, 193, 193);
+      }
+
+      .receber-recomendacoes,
+      .receber-assinatura-personalizada {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .receber-recomendacoes>p,
+      .receber-assinatura-personalizada>p {
+        font-family: "Pacifico", cursive;
+        font-style: normal;
+        color: white;
+      }
+
+      .receber-recomendacoes>img {
+        width: 10%;
+      }
+
+      .receber-assinatura-personalizada>img {
+        width:15%;
+      }
+
+      form {
+        margin-top: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: white;
+      }
+
+      input[type="text"],
+      input[type="email"] {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      input[type="submit"] {
+        background-color: rgba(189, 137, 14, 0.805);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+      }
+
+      input[type="submit"]:hover {
+        background-color: rgba(189, 137, 14, 0.805);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>WhatToReadNext</h1>
+      <p>Porque todo livro possui o seu par perfeito.</p>
+    </header>
+
+    <section class="recomendacoes">
+      <h2>Recomendações Semanais</h2>
+      
+      <div class="trailer collapse">
+        <div class="book-container">
+          <img src="duna.jpg" alt="Duna" class="book-image" />
+          <div class="overlay">
+            <div class="overlay-text">
+              <h2>Ficção Científica</h2>
+              <p>
+                Se você leu <em>Duna</em>, pode gostar de
+                <em>Fundação</em> porque ambos exploram a complexidade de
+                sociedades futuristas.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="book-container">
+          <img src="pridejpg.jpg" alt="Orgulho e Preconceito" class="book-image" />
+          <div class="overlay">
+            <div class="overlay-text">
+              <h2>Romance</h2>
+              <p>
+                Se você leu <em>Orgulho e Preconceito</em>, pode gostar de
+                <em>Jane Eyre</em> porque ambos exploram a força e a
+                independência das protagonistas femininas.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="book-container">
+          <img src="expresso.jpg" alt="Assassinato no Expresso do Oriente" class="book-image" />
+          <div class="overlay">
+            <div class="overlay-text">
+              <h2>Mistério</h2>
+              <p>
+                Se você leu
+                <em>O Assassinato no Expresso do Oriente</em>, pode gostar de
+                <em>O Cão dos Baskervilles</em> porque ambos são clássicos do
+                mistério com enredos envolventes.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="book-container">
+          <img src="sol.jpg" alt="O Sol é Para Todos" class="book-image" />
+          <div class="overlay">
+            <div class="overlay-text">
+              <h2>Ficção Histórica</h2>
+              <p>
+                Se você leu
+                <em>O Sol é Para Todos</em>, pode gostar de
+                <em>A Menina que Roubava Livros</em> porque ambos exploram temas
+                profundos e comoventes em contextos históricos.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="receber-recomendacoes">
+        <img src="envelope.png" alt="envelope">
+        <p>Assine nossas recomendações semanais!</p>
+      </div>
+
+      <div id="cadastro-form">
+      </div>
+
+    </section>
+
+    <section class="assinatura">
+      <div class="texto collapse">
+        <h2>Assinatura Personalizada</h2>
+        <p>
+          Gostou de um livro específico e quer descobrir outro similar?<br>Nossa
+          equipe de experts vai analisar o perfil do livro que você indicar e
+          enviar uma recomendação personalizada dentro de 24 horas. <br>Perfeito para
+          quem busca uma experiência de leitura única e sob medida.
+        </p>
+      </div>
+
+      <div class="receber-assinatura-personalizada">
+        <img src="livro.png" alt="livro-aberto">
+        <p>Receba aqui sua recomendação personalizada!</p>
+      </div>
+
+      <div id="assinatura-form">
+      </div>
+    </section>
+
+    <section class="experts collapse">
+      <h2>Conheça Nossos Experts</h2>
+      <div class="trailer">
+        <div class="expert-container">
+          <img class="expert-image" src="juscelino.png">
+          <div class="overlay">
+            <div class="overlay-text">
+              <h2>Juscelino Dias</h2>
+              <p>Leitor assíduo desde a infância, é apaixonado por livros de ficção científica e de mistério.</p>
+            </div>
+          </div>
+        </div>
+        <div class="expert-container">
+          <img class="expert-image" src="laura.jpg">
+          <div class="overlay">
+            <div class="overlay-text">
+              <h2>Laura Pessoa</h2>
+              <p>Graduada em letras, se especializou em literatura nacional.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <script>
+      document.querySelector('.receber-recomendacoes').addEventListener('mouseover', function() {
+        form = document.querySelector('#cadastro-form');
+        form.classList.add('forms');
+        form.innerHTML = `
+        <p>
+          Se cadastre e receba diretamente no seu e-mail recomendações semanais para se manter sempre inspirado.
+        </p>
+
+        <form action="#" method="post">
+          <label for="name">Nome Completo:</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required />
+
+          <input type="submit" value="Receber Recomendações" />
+        `;
+      });
+
+      document.querySelector('.receber-assinatura-personalizada').addEventListener('mouseover', function() {
+        form = document.querySelector('#assinatura-form');
+        form.classList.add('forms');
+        form.innerHTML = `
+        <form action="#" method="post">
+          <label for="favorite-book">Diz pra gente um livro que você amou</label>
+          <input type="text" id="favorite-book" name="favorite-book" required />
+  
+          <label for="reason">Por quê ele mudou sua vida?</label>
+          <input type="text" id="reason" name="reason" required />
+  
+          <label for="email-custom">Em qual e-mail podemos te sugerir sua próxima aventura literária?</label>
+          <input type="email" id="email-custom" name="email-custom" required />
+  
+          <input type="submit" value="Receber Indicação Personalizada" />
+        </form>
+        `;
+      });
+
+      collapsers = document.querySelectorAll('.collapse');
+
+      collapsers.forEach(function (collapse) {
+        collapse.addEventListener('mouseout', function() {
+        formRecomendacoes = document.querySelector('#cadastro-form');
+        formRecomendacoes.classList.remove('forms');
+        formRecomendacoes.innerHTML = ``;
+        formAssinatura = document.querySelector('#assinatura-form');
+        formAssinatura.classList.remove('forms');
+        formAssinatura.innerHTML = ``;
+      });
+    });
+    </script>
+  </body>
+</html>
