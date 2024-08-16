@@ -7,23 +7,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Whisper&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Whisper&display=swap?family=Edu+VIC+WA+NT+Beginner:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Whisper&display=swap?family=Edu+VIC+WA+NT+Beginner:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Pacifico&family=Whisper&display=swap"
       rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Whisper&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Pacifico&family=Whisper&display=swap" rel="stylesheet"
     />
     <style>
+      :root {
+        --background-gradient: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+        --darken: rgba(0, 0, 0, 0.6);
+        --reddish: #4a0606;
+        --creme: #F5F5DC;
+        --yellowish: rgba(189, 137, 14, 0.805);
+        --whitish: rgb(193, 193, 193);
+      }
+
       body {
-        font-family: "Inter", sans-serif;
-        font-weight: 400;
+        font-family: "Pacifico", cursive;
         font-style: normal;
-        background-color: #5a5a5a;
-        color: #333;
+        color:  var(--reddish);
         margin: 0;
         padding: 0;
       }
@@ -33,20 +33,20 @@
         font-weight: 400;
         font-style: normal;
         font-size: xx-large;
-        background-image: url("arrangement-with-books-cup.jpg"); /* Coloque aqui a URL da imagem de fundo */
+        background-image: url("arrangement-with-books-cup.jpg");
         background-size: cover;
         background-position: center;
         color: white;
-        padding: 20px; /* Ajuste o padding conforme necessário */
+        padding: 20px;
         text-align: center;
         position: relative;
-        height: 100vh; /* Faz com que o header ocupe 100% da altura da tela */
+        height: 100vh;
         display: flex;
-        flex-direction: row; /* Alinha os elementos na vertical */
+        flex-direction: row;
         justify-content: center;
-        align-items: center; /* Centraliza o texto vertical e horizontalmente */
-        overflow: hidden; /* Garante que nada saia do header */
-        box-sizing: border-box; /* Inclui padding e bordas na altura total */
+        align-items: center;
+        overflow: hidden;
+        box-sizing: border-box;
       }
 
       header::before {
@@ -56,39 +56,46 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(
-          0,
-          0,
-          0,
-          0.6
-        ); /* Adiciona um overlay escuro para melhorar a legibilidade */
+        background-color: var(--darken);
         z-index: 1;
       }
 
-      .recomendacoes {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), 
-        url("book-grab.jpg");
+      .background-image {
         background-size: cover;
+      }
+
+      .background-image-70 {
         background-position: center 70%;
       }
 
-      .assinatura {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)),
-        url("book-coffee.jpg");
-        background-size: cover;
+      .background-image-50 {
         background-position: center 50%;
       }
 
-      .experts {
-        background-color: #F5F5DC;
+      .recomendacoes {
+        background-image: var(--background-gradient), 
+        url("book-grab.jpg");
       }
 
+      .assinatura {
+        background-image: var(--background-gradient),
+        url("book-coffee.jpg");
+      }
 
-      header h1,
-      header p {
+      .experts {
+        background-color: var(--creme);
+      }
+
+      header>h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      header>h1,
+      header>p {
         margin: 1em;
         position: relative;
-        z-index: 2; /* Garante que o texto esteja acima do overlay */
+        z-index: 2;
       }
 
       section {
@@ -99,23 +106,21 @@
 
       .trailer {
         display: flex;
-        flex-wrap: wrap; /* Permite que as divs se movam para a linha seguinte, se necessário */
-        gap: 20px; /* Espaço entre as divs */
-        justify-content: space-evenly; /* Centraliza as divs no container */
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-evenly;
         padding: 20px;
       }
 
-      .book-container,
-      .expert-container {
+      .container{
         position: relative;
-        display: inline-block; /* Para que a imagem e a sobreposição fiquem juntas */
+        display: inline-block;
       }
 
-      .book-image,
-      .expert-image {
+      .contained-image {
         display: block;
-        width: 300px; /* Ajuste conforme necessário */
-        height: 450px; /* Mantém a proporção da imagem */
+        width: 300px;
+        height: 450px;
       }
 
       .overlay {
@@ -124,55 +129,35 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(
-          0,
-          0,
-          0,
-          0.5
-        ); /* Faixa escura com 50% de opacidade */
+        background-color: var(--darken);
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        opacity: 0; /* Começa invisível */
-        transition: opacity 0.3s ease; /* Transição suave */
+        opacity: 0;
+        transition: opacity 0.3s ease;
       }
 
-      .book-container:hover .overlay,
-      .expert-container:hover .overlay {
-        opacity: 1; /* Torna a sobreposição visível ao passar o mouse */
+      .container:hover .overlay {
+        opacity: 1;
       }
 
       .overlay-text {
         text-align: center;
-        font-size: 1.2em; /* Ajuste conforme necessário */
+        font-size: 1.2em;
         padding: 10px;
       }
 
       .forms {
-        background-color:  #4a0606;
+        font-family: "Inter", sans-serif;
+        background-color: var(--reddish);
         border-radius: 20px;
         padding: 1em;
         opacity: 80%;
-      }
-
-      h1 {
-        font-size: 2.5em;
-        margin-bottom: 10px;
-      }
-
-      h2 {
-        font-size: 2em;
+        margin-top: 20px;
         color: white;
-      }
-
-      .recomendacoes>h2,
-      .assinatura>div>h2,
-      .experts>h2,
-      .assinatura>div>p {
-        font-family: "Pacifico", cursive;
-        font-style: normal;
-        color:  #4a0606;
+        font-size: 1.2em;
+        line-height: 1.5;
       }
 
       .recomendacoes>h2,
@@ -181,24 +166,11 @@
         font-size: xx-large;
       }
 
-      p {
-        font-size: 1.2em;
-        line-height: 1.5;
-        margin-bottom: 20px;
-        color: rgb(193, 193, 193);
-      }
-
       .receber-recomendacoes,
       .receber-assinatura-personalizada {
         display: flex;
         align-items: center;
         justify-content: center;
-      }
-
-      .receber-recomendacoes>p,
-      .receber-assinatura-personalizada>p {
-        font-family: "Pacifico", cursive;
-        font-style: normal;
         color: white;
       }
 
@@ -208,10 +180,6 @@
 
       .receber-assinatura-personalizada>img {
         width:15%;
-      }
-
-      form {
-        margin-top: 20px;
       }
 
       label {
@@ -226,12 +194,12 @@
         width: 90%;
         padding: 10px;
         margin-bottom: 20px;
-        border: 1px solid #ccc;
+        border: 1px;
         border-radius: 5px;
       }
 
       input[type="submit"] {
-        background-color: rgba(189, 137, 14, 0.805);
+        background-color: var(--yellowish);
         color: white;
         padding: 10px 20px;
         border: none;
@@ -241,7 +209,7 @@
       }
 
       input[type="submit"]:hover {
-        background-color: rgba(189, 137, 14, 0.805);
+        background-color: var(--yellowish);
       }
     </style>
   </head>
@@ -251,63 +219,54 @@
       <p>Porque todo livro possui o seu par perfeito.</p>
     </header>
 
-    <section class="recomendacoes">
+    <section class="recomendacoes background-image background-image-70">
       <h2>Recomendações Semanais</h2>
       
       <div class="trailer collapse">
-        <div class="book-container">
-          <img src="duna.jpg" alt="Duna" class="book-image" />
+        <div class="container">
+          <img src="duna.jpg" alt="Duna" class="contained-image" />
           <div class="overlay">
             <div class="overlay-text">
               <h2>Ficção Científica</h2>
               <p>
-                Se você leu <em>Duna</em>, pode gostar de
-                <em>Fundação</em> porque ambos exploram a complexidade de
-                sociedades futuristas.
+                Se você leu <em>Duna</em> e curtiu a complexidade das sociedades futurísticas, leia também <em>Fundação</em>.
               </p>
             </div>
           </div>
         </div>
 
-        <div class="book-container">
-          <img src="pridejpg.jpg" alt="Orgulho e Preconceito" class="book-image" />
+        <div class="container">
+          <img src="pridejpg.jpg" alt="Orgulho e Preconceito" class="contained-image" />
           <div class="overlay">
             <div class="overlay-text">
               <h2>Romance</h2>
               <p>
-                Se você leu <em>Orgulho e Preconceito</em>, pode gostar de
-                <em>Jane Eyre</em> porque ambos exploram a força e a
-                independência das protagonistas femininas.
+                Se você leu <em>Janie Erye</em> e se amarrou na força e indenpendência das mulheres, se liga no livro <em>Orgulho e Preconceito</em>.
               </p>
             </div>
           </div>
         </div>
 
-        <div class="book-container">
-          <img src="expresso.jpg" alt="Assassinato no Expresso do Oriente" class="book-image" />
+        <div class="container">
+          <img src="expresso.jpg" alt="Assassinato no Expresso do Oriente" class="contained-image" />
           <div class="overlay">
             <div class="overlay-text">
               <h2>Mistério</h2>
               <p>
-                Se você leu
-                <em>O Assassinato no Expresso do Oriente</em>, pode gostar de
-                <em>O Cão dos Baskervilles</em> porque ambos são clássicos do
-                mistério com enredos envolventes.
+                Se você leu <em>O Cão dos Baskervilles</em> e ficou vidrado neste mistério, tente desvendar o que ocorre no final de <em>O Assassinato no Expresso do Oriente</em>.
               </p>
             </div>
           </div>
         </div>
 
-        <div class="book-container">
-          <img src="sol.jpg" alt="O Sol é Para Todos" class="book-image" />
+        <div class="container">
+          <img src="sol.jpg" alt="O Sol é Para Todos" class="contained-image" />
           <div class="overlay">
             <div class="overlay-text">
               <h2>Ficção Histórica</h2>
               <p>
-                Se você leu
-                <em>O Sol é Para Todos</em>, pode gostar de
-                <em>A Menina que Roubava Livros</em> porque ambos exploram temas
-                profundos e comoventes em contextos históricos.
+                Se você fez uma viagem no tempo e se comoveu com <em>A Menina que Roubava Livros</em>, dê uma espiada em
+                <em>O Sol é Para Todos</em>.
               </p>
             </div>
           </div>
@@ -325,14 +284,14 @@
 
     </section>
 
-    <section class="assinatura">
+    <section class="assinatura background-image background-image-50">
       <div class="texto collapse">
         <h2>Assinatura Personalizada</h2>
         <p>
-          Gostou de um livro específico e quer descobrir outro similar?<br>Nossa
-          equipe de experts vai analisar o perfil do livro que você indicar e
-          enviar uma recomendação personalizada dentro de 24 horas. <br>Perfeito para
-          quem busca uma experiência de leitura única e sob medida.
+          Gostou de um livro específico e quer descobrir outro similar?<br>
+          Nossa equipe de experts vai analisar o perfil do livro que você indicar e
+          enviar uma recomendação personalizada dentro de 24 horas.<br>
+          Perfeito para quem busca uma experiência de leitura única e sob medida.
         </p>
       </div>
 
@@ -348,8 +307,8 @@
     <section class="experts collapse">
       <h2>Conheça Nossos Experts</h2>
       <div class="trailer">
-        <div class="expert-container">
-          <img class="expert-image" src="juscelino.png">
+        <div class="container">
+          <img class="contained-image" src="juscelino.png">
           <div class="overlay">
             <div class="overlay-text">
               <h2>Juscelino Dias</h2>
@@ -357,8 +316,8 @@
             </div>
           </div>
         </div>
-        <div class="expert-container">
-          <img class="expert-image" src="laura.jpg">
+        <div class="container">
+          <img class="contained-image" src="laura.jpg">
           <div class="overlay">
             <div class="overlay-text">
               <h2>Laura Pessoa</h2>
