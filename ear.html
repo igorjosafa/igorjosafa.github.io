@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Escalas Musicais</title>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #F3E9E3;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2c3e50;
+    }
+
+    h3 {
+      margin-top: 0;
+      color: #34495e;
+    }
+
+
+/* 📊 Tabela de resultados */
+table {
+  width: 50%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+  table {
+    background-color: #E7D3C8;
+  }
+
+thead {
+  background-color:#C08457	;
+  color: rgb(80, 63, 63);
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #D9B99B
+}
+
+@media (prefers-color-scheme: dark) {
+  tbody tr:nth-child(even) {
+    background-color: #a29e9e;
+  }
+}
+
+    .section{
+      background: #E7D3C8;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+
+    .subsection{
+      background: #e3c3b4;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+
+    .flex-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: #fff;
+      font-size: 14px;
+      min-width: 150px;
+    }
+
+    button {
+      background: #C08457;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: 	#A3684B;
+    }
+
+    #selectScaleNote button,
+    #harmonicField button,
+    #answerField button {
+      background: 	#A3684B;
+    }
+
+    #selectScaleNote button:hover,
+    #harmonicField button:hover,
+    #answerField button:hover {
+      background: #E7D3C8;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 6px;
+      accent-color: #3498db;
+    }
+
+    .degrees {
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Ear</h1>
+
+  <div id="settings" class="section">
+    <h3>Configurações</h3>
+    <div class="row">
+      <div class="flex-container">
+        <div>
+          <p>Selecione a tonalidade</p>
+          <select onchange="changeKey(this.value)" id="tonalidade">
+            <option value="blank">Selecione uma tonalidade</option>
+            <option value="c">C</option>
+            <option value="cSharp">C#</option>
+            <option value="d">D</option>
+            <option value="dSharp">D#</option>
+            <option value="e">E</option>
+            <option value="f">F</option>
+            <option value="fSharp">F#</option>
+            <option value="g">G</option>
+            <option value="gSharp">G#</option>
+            <option value="a">A</option>
+            <option value="aSharp">A#</option>
+            <option value="b">B</option>
+          </select>
+        </div>
+
+        <div>
+          <p>Selecione o modo</p>
+          <select onchange="changeMode(this.value)" id="modo">
+            <option value="blank">Selecione um modo</option>
+            <option value="ionian">Jônio</option>
+            <option value="dorian">Dórico</option>
+            <option value="phrygian">Frígio</option>
+            <option value="lydian">Lídio</option>
+            <option value="mixolydian">Mixolídio</option>
+            <option value="aeolian">Eólio</option>
+            <option value="locrian">Locrio</option>
+          </select>
+        </div>
+      </div>
+      </div>
+
+      <div class="row"> 
+        <div class="flex-container" style="margin-top: 15px;">
+          <div>
+            <p>Duração das notas</p>
+            <select id="duration">
+              <option value="0.5">0.5</option>
+              <option value="1">1</option>
+              <option value="1.5">1.5</option>
+              <option value="2">2</option>
+              <option value="2.5">2.5</option>
+              <option value="3">3</option>
+              <option value="3.5">3.5</option>
+            </select>
+          </div>
+
+          <div>
+            <p>Volume das notas</p>
+            <select id="volume">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+              <option value="50">50</option>
+              <option value="60">60</option>
+              <option value="70">70</option>
+              <option value="80">80</option>
+              <option value="90">90</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div id="scale" class="section">
+    <h3>Escala</h3>
+    <div id="selectScaleNote">
+      <div class="flex-container">
+        <button onclick="playSelectedNote(0)">Fundamental</button>
+        <button onclick="playSelectedNote(1)">Supertônica</button>
+        <button onclick="playSelectedNote(2)">Mediantes</button>
+        <button onclick="playSelectedNote(3)">Subdominante</button>
+      </div>
+      <div class="flex-container">
+        <button onclick="playSelectedNote(4)">Dominante</button>
+        <button onclick="playSelectedNote(5)">Submediantes</button>
+        <button onclick="playSelectedNote(6)">Sensível</button>
+        <button onclick="playSelectedNote(7)">Oitava</button>
+      </div>
+    </div>
+    <div style="margin-top: 15px;">
+      <button onclick="playScale()">Tocar a escala</button>
+    </div>
+  </div>
+
+  <div id="harmonicField" class="section">
+    <h3>Campo Harmônico</h3>
+    <div class="flex-container" onchange="changeDegrees()">
+      <div>
+        <label><input class="degrees" type="checkbox" id="includeRoot" name="1" checked/>Fundamental</label>
+        <label><input class="degrees" type="checkbox" id="includeSecond" name="2"/>2ª</label>
+        <label><input class="degrees" type="checkbox" id="includeThird" name="3" checked/>3ª</label>
+        <label><input class="degrees" type="checkbox" id="includeFourth" name="4"/>4ª</label>
+        <label><input class="degrees" type="checkbox" id="includeFifth" name="5" checked/>5ª</label>
+        <label><input class="degrees" type="checkbox" id="includeSixth" name="6"/>6ª</label>
+      </div>
+      <div>
+        <label><input class="degrees" type="checkbox" id="includeSeventh" name="7"/>7ª</label>
+        <label><input class="degrees" type="checkbox" id="includeEighth" name="8"/>8ª</label>
+        <label><input class="degrees" type="checkbox" id="includeNinth" name="9"/>9ª</label>
+        <label><input class="degrees" type="checkbox" id="includeEleventh" name="11"/>11ª</label>
+        <label><input class="degrees" type="checkbox" id="includeThirteenth" name="13"/>13ª</label>
+      </div>
+    </div>
+
+    <div class="flex-container" style="margin-top: 15px;">
+      <button onclick="playSelectedDegree(0)">I</button>
+      <button onclick="playSelectedDegree(1)">ii</button>
+      <button onclick="playSelectedDegree(2)">iii</button>
+      <button onclick="playSelectedDegree(3)">IV</button>
+      <button onclick="playSelectedDegree(4)">V</button>
+      <button onclick="playSelectedDegree(5)">vi</button>
+      <button onclick="playSelectedDegree(6)">vii</button>
+      <button onclick="playSelectedDegree(7)">VIII</button>
+    </div>
+
+    <div style="margin-top: 15px;">
+      <button onclick="playHarmonicField()">Tocar o campo harmônico</button>
+    </div>
+  </div>
+
+  <div id="training-area" class="section">
+    <h3>Área de Treinamento</h3>
+    <div id="guessDegree" class="subsection">
+      <h4>Adivinhe o Grau no Campo Harmônico</h4>
+      <div id="guessDegreeResult"></div>
+      <p>Ouça a nota e tente adivinhar o seu grau no campo harmônico.</p>
+      <div>
+        <div class="flex-container">
+        <p>Duração do acorde de base</p>
+        <select id="durationBaseChord">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20" selected>20</option>
+        </select>
+        </div>
+        <div class="flex-container">
+        <p>Duração da nota</p>
+        <select id="durationNoteToGuess">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          </div>
+        </select>
+      </div>
+      <div class="flex-container" style="margin-top: 30px;">
+        <button onclick="playBaseChord()">Tocar I grau</button>
+        <button onclick="playNoteToGuess()">Tocar nota</button>
+        <button onclick="drawNote()">Sortear nota</button>
+      </div>
+      <div id="answerField"style="margin-top: 30px;">
+        <div class="flex-container">
+        <button onclick="guessNote(0)">Fundamental</button>
+        <button onclick="guessNote(1)">Supertônica</button>
+        <button onclick="guessNote(2)">Mediantes</button>
+        <button onclick="guessNote(3)">Subdominante</button>
+        </div>
+        <div class="flex-container">
+        <button onclick="guessNote(4)">Dominante</button>
+        <button onclick="guessNote(5)">Submediantes</button>
+        <button onclick="guessNote(6)">Sensível</button>
+        </div>
+      </div>
+      <div id="scoreField" style="margin-top: 15px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Grau</th>
+              <th>Acertos</th>
+              <th>Total de Tentativas</th>
+              <th>Percentual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Fundamental</td>
+              <td id="fundamentalScore">0</td>
+              <td id="fundamentalTotal">0</td>
+              <td id="fundamentalPercentual">0%</td>
+            </tr>
+            <tr>
+              <td>Supertônica</td>
+              <td id="supertonicScore">0</td>
+              <td id="supertonicTotal">0</td>
+              <td id="supertonicPercentual">0%</td>
+            </tr>
+            <tr>
+              <td>Mediantes</td>
+              <td id="mediantScore">0</td>
+              <td id="mediantTotal">0</td>
+              <td id="mediantPercentual">0%</td>
+            </tr>
+            <tr>
+              <td>Subdominante</td>
+              <td id="subdominantScore">0</td>
+              <td id="subdominantTotal">0</td>
+              <td id="subdominantPercentual">0%</td>
+            </tr>
+            <tr>
+              <td>Dominante</td>
+              <td id="dominantScore">0</td>
+              <td id="dominantTotal">0</td>
+              <td id="dominantPercentual">0%</td>
+            </tr>
+            <tr>
+              <td>Submediantes</td>
+              <td id="submediantScore">0</td>
+              <td id="submediantTotal">0</td>
+              <td id="submediantPercentual">0%</td>
+            </tr>
+            <tr>
+              <td>Sensível</td>
+              <td id="leadingToneScore">0</td>
+              <td id="leadingToneTotal">0</td>
+              <td id="leadingTonePercentual">0%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="module">
+    import { Key } from './key.js';
+    import { HarmonicField } from './harmonicFields.js';
+    import { Player } from './player.js';
+
+    let key = "c";
+    let mode = "ionian";
+    let degrees = [1, 3, 5];
+    let octave = 3;
+    let noteToGuess = null;
+    let noteToGuessDegree = null;
+    let considerAnswerToScore = true;
+    let correctAnswer = false;
+    let fundamentalScore = [0, 0];
+    let supertonicScore = [0, 0];
+    let mediantScore = [0, 0];
+    let subdominantScore = [0, 0];
+    let dominantScore = [0, 0];
+    let submediantScore = [0, 0];
+    let leadingToneScore = [0, 0];
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const player = new Player(audioCtx);
+
+    setKey();
+
+    window.changeKey = function (selectedKey) {
+      key = selectedKey;
+      setKey();
+    }
+
+    window.changeMode = function (selectedMode) {
+      mode = selectedMode;
+      setKey();
+    }
+
+    window.changeDegrees = function () {
+      const checkboxes = document.querySelectorAll('.degrees');
+      degrees = [];
+      checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+          degrees.push(parseInt(checkbox.name));
+        }
+      });
+      setKey();
+    }
+
+    function setKey() {
+      globalThis.key = new Key(key, mode, degrees, octave);
+    }
+
+    window.playScale = function () {
+      const duration = parseFloat(document.getElementById('duration').value);
+      const volume = parseFloat(document.getElementById('volume').value)/100;
+      globalThis.key.playScale(player, volume, duration);
+    }
+
+    window.playSelectedNote = function (note) {
+      const duration = parseFloat(document.getElementById('duration').value);
+      const volume = parseFloat(document.getElementById('volume').value)/100;
+      globalThis.key.scale.scaleNotes[note].play(player, volume, duration);
+    }
+
+
+    window.playHarmonicField = function () {
+      const duration = parseFloat(document.getElementById('duration').value);
+      const volume = parseFloat(document.getElementById('volume').value)/100;
+      globalThis.key.playHarmonicField(player, volume, duration);
+    }
+
+    window.playSelectedDegree = function (degree) {
+      const duration = parseFloat(document.getElementById('duration').value);
+      const volume = parseFloat(document.getElementById('volume').value)/100;
+      globalThis.key.harmonicField.chords[degree].play(player, volume, duration);
+    }
+
+    window.playBaseChord = function () {
+      const duration = parseFloat(document.getElementById('durationBaseChord').value);
+      const volume = parseFloat(document.getElementById('volume').value)/100;
+      globalThis.key.harmonicField.chords[0].play(player, volume, duration);
+    }
+
+    window.playNoteToGuess = function () {
+      const duration = parseFloat(document.getElementById('durationNoteToGuess').value);
+      const volume = parseFloat(document.getElementById('volume').value)/100;
+      noteToGuess.play(player, volume, duration);
+    }
+
+    window.drawNote = function () {
+      updateScores();
+
+      const notes = globalThis.key.extendedScale;
+      const randomIndex = Math.floor(Math.random() * notes.length);
+      considerAnswerToScore = true;
+      noteToGuess = notes[randomIndex];
+      document.getElementById('guessDegreeResult').textContent = ``;
+      globalThis.playNoteToGuess();
+
+      if (randomIndex === 0 || randomIndex === 7 || randomIndex === 14) {
+        noteToGuessDegree = fundamentalScore;
+      } else if (randomIndex ===  1 || randomIndex === 8 || randomIndex === 15) {
+        noteToGuessDegree = supertonicScore;
+      } else if (randomIndex === 2 || randomIndex === 9 || randomIndex === 16) {
+        noteToGuessDegree = mediantScore;
+      } else if (randomIndex === 3 || randomIndex === 10 || randomIndex === 17) {
+        noteToGuessDegree = subdominantScore;
+      } else if (randomIndex === 4 || randomIndex === 11 || randomIndex === 18) {
+        noteToGuessDegree = dominantScore;
+      } else if (randomIndex === 5 || randomIndex === 12 || randomIndex === 19) {
+        noteToGuessDegree = submediantScore;
+      } else if (randomIndex === 6 || randomIndex === 13 || randomIndex === 20) {
+        noteToGuessDegree = leadingToneScore;
+      }
+    }
+
+    window.guessNote = function (note) {
+      const notes = globalThis.key.extendedScale;
+      let guessedNote = notes[note];
+      if (guessedNote.name === noteToGuess.name) {
+        console.log("Resposta Correta!");
+        correctAnswer = true;
+        document.getElementById('guessDegreeResult').textContent = `Resposta Correta! A nota era ${noteToGuess.name}`;
+        if (considerAnswerToScore) {
+          noteToGuessDegree[0] += 1; // Incrementa o acerto
+          noteToGuessDegree[1] += 1; // Incrementa o total de tentativas
+        }
+      } else {
+        console.log("Resposta Errada!");
+        document.getElementById('guessDegreeResult').textContent = `Resposta Errada!`;
+        if (considerAnswerToScore) {
+          noteToGuessDegree[1] += 1; // Incrementa o total de tentativas
+        }
+      }
+      considerAnswerToScore = false;
+    }
+
+    function updateScores() {
+      document.getElementById('fundamentalScore').textContent = fundamentalScore[0];
+      document.getElementById('fundamentalTotal').textContent = fundamentalScore[1];
+      document.getElementById('fundamentalPercentual').textContent = (fundamentalScore[1] > 0) ? ((fundamentalScore[0] / fundamentalScore[1]) * 100).toFixed(2) + '%' : '0%';
+
+      document.getElementById('supertonicScore').textContent = supertonicScore[0];
+      document.getElementById('supertonicTotal').textContent = supertonicScore[1];
+      document.getElementById('supertonicPercentual').textContent = (supertonicScore[1] > 0) ? ((supertonicScore[0] / supertonicScore[1]) * 100).toFixed(2) + '%' : '0%';
+
+      document.getElementById('mediantScore').textContent = mediantScore[0];
+      document.getElementById('mediantTotal').textContent = mediantScore[1];
+      document.getElementById('mediantPercentual').textContent = (mediantScore[1] > 0) ? ((mediantScore[0] / mediantScore[1]) * 100).toFixed(2) + '%' : '0%';
+
+      document.getElementById('subdominantScore').textContent = subdominantScore[0];
+      document.getElementById('subdominantTotal').textContent = subdominantScore[1];
+      document.getElementById('subdominantPercentual').textContent = (subdominantScore[1] > 0) ? ((subdominantScore[0] / subdominantScore[1]) * 100).toFixed(2) + '%' : '0%';
+
+      document.getElementById('dominantScore').textContent = dominantScore[0];
+      document.getElementById('dominantTotal').textContent = dominantScore[1];
+      document.getElementById('dominantPercentual').textContent = (dominantScore[1] > 0) ? ((dominantScore[0] / dominantScore[1]) * 100).toFixed(2) + '%' : '0%';
+
+      document.getElementById('submediantScore').textContent = submediantScore[0];
+      document.getElementById('submediantTotal').textContent = submediantScore[1];
+      document.getElementById('submediantPercentual').textContent = (submediantScore[1] > 0) ? ((submediantScore[0] / submediantScore[1]) * 100).toFixed(2) + '%' : '0%';
+
+      document.getElementById('leadingToneScore').textContent = leadingToneScore[0];
+      document.getElementById('leadingToneTotal').textContent = leadingToneScore[1];
+      document.getElementById('leadingTonePercentual').textContent = (leadingToneScore[1] > 0) ? ((leadingToneScore[0] / leadingToneScore[1]) * 100).toFixed(2) + '%' : '0%';
+      
+    }
+
+
+
+  </script>
+</body>
+</html>
+
