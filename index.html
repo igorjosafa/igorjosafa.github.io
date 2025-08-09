@@ -403,6 +403,11 @@ tbody tr:nth-child(even) {
               <td id="leadingToneTotal">0</td>
               <td id="leadingTonePercentual">0%</td>
             </tr>
+            <tr>
+              <td>Total</td>
+              <td id="totalScore">0</td>
+              <td id="totalGuesses">0</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -435,6 +440,8 @@ tbody tr:nth-child(even) {
     let dominantScore = [0, 0];
     let submediantScore = [0, 0];
     let leadingToneScore = [0, 0];
+    let totalScore = 0;
+    let totalGuesses = 0;
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     window.player = new Player(audioCtx, waveType);
@@ -552,14 +559,18 @@ tbody tr:nth-child(even) {
         if (considerAnswerToScore) {
           noteToGuessDegree[0] += 1; // Incrementa o acerto
           noteToGuessDegree[1] += 1; // Incrementa o total de tentativas
+          totalScore += 1;
+          totalGuesses += 1;
         }
       } else {
         console.log("Resposta Errada!");
         document.getElementById('guessDegreeResult').textContent = `Resposta Errada!`;
         if (considerAnswerToScore) {
           noteToGuessDegree[1] += 1; // Incrementa o total de tentativas
+          totalGuesses += 1;
         }
-      }
+      }     
+document.getElementById('totalScore').textContent = totalScore; document.getElementById('totalGuesses').textContent = totalGuesses;
       considerAnswerToScore = false;
     }
 
