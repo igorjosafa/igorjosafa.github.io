@@ -571,7 +571,9 @@ tbody tr:nth-child(even) {
           totalGuesses += 1;
         }
       }     
-document.getElementById('totalScore').textContent = totalScore; document.getElementById('totalGuesses').textContent = totalGuesses; document.getElementById('totalPercentual').textContent = (totalGuesses > 0) ? ((totalScore / totalGuesses) * 100).toFixed(2) + '%' : '0%';;
+document.getElementById('totalScore').textContent = totalScore;
+       document.getElementById('totalGuesses').textContent = totalGuesses;
+       document.getElementById('totalPercentual').textContent = (totalGuesses > 0) ? ((totalScore / totalGuesses) * 100).toFixed(2) + '%' : '0%';;
       considerAnswerToScore = false;
     }
 
