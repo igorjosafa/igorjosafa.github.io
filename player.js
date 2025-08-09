@@ -1,5 +1,5 @@
 class Player {
-    constructor(audioCtx, oscillatorType = 'sine') {
+    constructor(audioCtx, oscillatorType) {
         this.oscillatorType = oscillatorType;
         this.audioCtx = audioCtx;
     }
@@ -13,6 +13,10 @@ class Player {
         oscillator.onended = () => {
             oscillator.disconnect();
         };
+    }
+
+    changeOscillatorType(newType) {
+        this.oscillatorType = newType;
     }
 
     #getOscillator(freq, volume) {
