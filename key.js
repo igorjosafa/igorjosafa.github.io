@@ -20,6 +20,12 @@ class Key {
         this.scale = new (eval(`${scale}Scale`))(this.key, this.octave);
         this.harmonicField = new HarmonicField(this.scale, degrees);
         this.extendedScale = this.harmonicField.notes;
+
+        this.name = `${this.scale.name} (${this.key.toUpperCase()})`.replace('SHARP', '#')
+    }
+
+    toString() {
+        return this.name;
     }
 
     playScale(play, volume = 0.5, duration = 0.5) {

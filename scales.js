@@ -9,17 +9,23 @@ class threeOctavesScale {
     this.thirdOctaveScale = new (eval(firstOctaveScale.constructor.name))(
       firstOctaveScale.fundamentalNote, firstOctaveScale.octave + 2, firstOctaveScale.intervals
     )
+    this.fourthOctaveScale = new (eval(firstOctaveScale.constructor.name))(
+      firstOctaveScale.fundamentalNote, firstOctaveScale.octave + 3, firstOctaveScale.intervals
+    )
 
     this.notes = this.firstOctaveScale.scaleNotes.slice(0, 7).concat(
       this.secondOctaveScale.scaleNotes.slice(0, 7)
     ).concat(
       this.thirdOctaveScale.scaleNotes.slice(0, 7)
+    ).concat(
+      this.fourthOctaveScale.scaleNotes.slice(0, 1)
     )
   }
 }
 
 class sevenNotesScale {
-  constructor(fundamentalNote, octave, intervals) {
+  constructor(name, fundamentalNote, octave, intervals) {
+    this.name = name
     this.fundamentalNote = fundamentalNote;
     this.octave = octave;
     this.intervals = intervals;
@@ -57,43 +63,43 @@ class sevenNotesScale {
 
 class ionianScale extends sevenNotesScale {
   constructor(fundamentalNote, octave) {
-    super(fundamentalNote, octave, [0, 2, 4, 5, 7, 9, 11, 12]);
+    super("Modo Jônio", fundamentalNote, octave, [0, 2, 4, 5, 7, 9, 11, 12]);
   }
 }
 
 class dorianScale extends sevenNotesScale {
   constructor(fundamentalNote, octave) {
-    super(fundamentalNote, octave, [0, 2, 3, 5, 7, 9, 10, 12]);
+    super("Modo Dórico", fundamentalNote, octave, [0, 2, 3, 5, 7, 9, 10, 12]);
   }
 }
 
 class phrygianScale extends sevenNotesScale {
   constructor(fundamentalNote, octave) {
-    super(fundamentalNote, octave, [0, 1, 3, 5, 7, 8, 10, 12]);
+    super("Modo Frígio", fundamentalNote, octave, [0, 1, 3, 5, 7, 8, 10, 12]);
   }
 }
 
 class lydianScale extends sevenNotesScale {
   constructor(fundamentalNote, octave) {
-    super(fundamentalNote, octave, [0, 2, 4, 6, 7, 9, 11, 12]);
+    super("Modo Lídio", fundamentalNote, octave, [0, 2, 4, 6, 7, 9, 11, 12]);
   }
 }
 
 class mixolydianScale extends sevenNotesScale {
   constructor(fundamentalNote, octave) {
-    super(fundamentalNote, octave, [0, 2, 4, 5, 7, 9, 10, 12]);
+    super("Modo Mixolídio", fundamentalNote, octave, [0, 2, 4, 5, 7, 9, 10, 12]);
   }
 }
 
 class aeolianScale extends sevenNotesScale {
   constructor(fundamentalNote, octave) {
-    super(fundamentalNote, octave, [0, 2, 3, 5, 7, 8, 10, 12]);
+    super("Modo Eólio", fundamentalNote, octave, [0, 2, 3, 5, 7, 8, 10, 12]);
   }
 }
 
 class locrianScale extends sevenNotesScale {
   constructor(fundamentalNote, octave) {
-    super(fundamentalNote, octave, [0, 1, 3, 5, 7, 8, 10, 12]);
+    super("Modo Lócrio", fundamentalNote, octave, [0, 1, 3, 5, 7, 8, 10, 12]);
   }
 }
 

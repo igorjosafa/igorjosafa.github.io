@@ -289,8 +289,8 @@ tbody tr:nth-child(even) {
 
   <div id="training-area" class="section">
     <h3>Área de Treinamento</h3>
-    <div id="guessDegree" class="subsection">
-      <h4>Adivinhe o Grau no Campo Harmônico</h4>
+    <div id="gndGame" class="subsection">
+      <h4 id="gndGameTitle"></h4>
       <p>Objetivo: ouça uma nota e tente adivinhar o seu grau no campo harmônico.</p>
       <p>Instruções:</p>
       <ol>
@@ -306,7 +306,7 @@ tbody tr:nth-child(even) {
       <div>
         <div class="flex-container">
         <p>Duração do acorde de base</p>
-        <select id="durationBaseChord">
+        <select id="gndGameDurationBaseChord">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -319,35 +319,41 @@ tbody tr:nth-child(even) {
         </div>
         <div class="flex-container">
         <p>Duração da nota</p>
-        <select id="durationNoteToGuess">
+        <select id="gndGameDurationNoteToGuess">
+          <option value="0.5" selected>0.5</option>
           <option value="1">1</option>
           <option value="2">2</option>
-          <option value="3" selected>3</option>
+          <option value="3">3</option>
           <option value="4">4</option>
           <option value="5">5</option>
           </div>
         </select>
       </div>
       <div class="flex-container " style="margin-top: 30px;">
-        <button onclick="drawNote()">Sortear nota</button>
+        <button onclick="guessNoteDegreeGame.beginRound()">Sortear nota</button>
       </div>
       <div class="flex-container" style="margin-top: 30px;">
-        <button onclick="playBaseChord()">Tocar I grau</button>
-        <button onclick="playNoteToGuess()">Tocar nota sorteada novamente</button>
+        <button onclick="guessNoteDegreeGame.playBaseChord()">Tocar I grau</button>
+        <button onclick="guessNoteDegreeGame.playNoteToGuess()">Tocar nota sorteada novamente</button>
+      </div>
+      <div class="flex-container" style="margin-top: 30px;">
+        <button onclick="guessNoteDegreeGame.playScaleUpToNoteToGuess()">Tocar escala até a nota sorteada</button>
+        <button onclick="guessNoteDegreeGame.playScaleUpFromNoteToGuess()">Tocar escala partindo da nota</button>
+        <button onclick="guessNoteDegreeGame.playScaleDownFromNoteToGuess()">Tocar escala descendente partindo da nota</button>
       </div>
       <div id="answerField"style="margin-top: 30px;">
         <h3>Qual é o grau da nota sorteada?</h3>
-        <div id="guessDegreeResult"></div>
+        <div id="gndGameGuessedAnswer"></div>
         <div class="flex-container">
-        <button onclick="guessNote(0)">Fundamental</button>
-        <button onclick="guessNote(1)">Supertônica</button>
-        <button onclick="guessNote(2)">Mediantes</button>
-        <button onclick="guessNote(3)">Subdominante</button>
+        <button onclick="guessNoteDegreeGame.checkNoteAnswer('FirstDegree')">Fundamental</button>
+        <button onclick="guessNoteDegreeGame.checkNoteAnswer('SecondDegree')">Supertônica</button>
+        <button onclick="guessNoteDegreeGame.checkNoteAnswer('ThirdDegree')">Mediantes</button>
+        <button onclick="guessNoteDegreeGame.checkNoteAnswer('FourthDegree')">Subdominante</button>
         </div>
         <div class="flex-container">
-        <button onclick="guessNote(4)">Dominante</button>
-        <button onclick="guessNote(5)">Submediantes</button>
-        <button onclick="guessNote(6)">Sensível</button>
+        <button onclick="guessNoteDegreeGame.checkNoteAnswer('FifthDegree')">Dominante</button>
+        <button onclick="guessNoteDegreeGame.checkNoteAnswer('SixthDegree')">Submediantes</button>
+        <button onclick="guessNoteDegreeGame.checkNoteAnswer('SeventhDegree')">Sensível</button>
         </div>
       </div>
       <div id="scoreField" style="margin-top: 15px;">
@@ -363,51 +369,51 @@ tbody tr:nth-child(even) {
           <tbody>
             <tr>
               <td>Fundamental</td>
-              <td id="fundamentalScore">0</td>
-              <td id="fundamentalTotal">0</td>
-              <td id="fundamentalPercentual">0%</td>
+              <td id="gndGameFirstDegreeScore">0</td>
+              <td id="gndGameFirstDegreeTotal">0</td>
+              <td id="gndGameFirstDegreePercentual">0.00%</td>
             </tr>
             <tr>
               <td>Supertônica</td>
-              <td id="supertonicScore">0</td>
-              <td id="supertonicTotal">0</td>
-              <td id="supertonicPercentual">0%</td>
+              <td id="gndGameSecondDegreeScore">0</td>
+              <td id="gndGameSecondDegreeTotal">0</td>
+              <td id="gndGameSecondDegreePercentual">0.00%</td>
             </tr>
             <tr>
-              <td>Mediantes</td>
-              <td id="mediantScore">0</td>
-              <td id="mediantTotal">0</td>
-              <td id="mediantPercentual">0%</td>
+              <td>Mediante</td>
+              <td id="gndGameThirdDegreeScore">0</td>
+              <td id="gndGameThirdDegreeTotal">0</td>
+              <td id="gndGameThirdDegreePercentual">0.00%</td>
             </tr>
             <tr>
               <td>Subdominante</td>
-              <td id="subdominantScore">0</td>
-              <td id="subdominantTotal">0</td>
-              <td id="subdominantPercentual">0%</td>
+              <td id="gndGameFourthDegreeScore">0</td>
+              <td id="gndGameFourthDegreeTotal">0</td>
+              <td id="gndGameFourthDegreePercentual">0.00%</td>
             </tr>
             <tr>
               <td>Dominante</td>
-              <td id="dominantScore">0</td>
-              <td id="dominantTotal">0</td>
-              <td id="dominantPercentual">0%</td>
+              <td id="gndGameFifthDegreeScore">0</td>
+              <td id="gndGameFifthDegreeTotal">0</td>
+              <td id="gndGameFifthDegreePercentual">0.00%</td>
             </tr>
             <tr>
-              <td>Submediantes</td>
-              <td id="submediantScore">0</td>
-              <td id="submediantTotal">0</td>
-              <td id="submediantPercentual">0%</td>
+              <td>Submediante</td>
+              <td id="gndGameSixthDegreeScore">0</td>
+              <td id="gndGameSixthDegreeTotal">0</td>
+              <td id="gndGameSixthDegreePercentual">0.00%</td>
             </tr>
             <tr>
               <td>Sensível</td>
-              <td id="leadingToneScore">0</td>
-              <td id="leadingToneTotal">0</td>
-              <td id="leadingTonePercentual">0%</td>
+              <td id="gndGameSeventhDegreeScore">0</td>
+              <td id="gndGameSeventhDegreeTotal">0</td>
+              <td id="gndGameSeventhDegreePercentual">0.00%</td>
             </tr>
             <tr>
               <td>Total</td>
-              <td id="totalScore">0</td>
-              <td id="totalGuesses">0</td>
-              <td id="totalPercentual">0%</td>
+              <td id="gndGameTotalScore">0</td>
+              <td id="gndGameTotalGuesses">0</td>
+              <td id="gndGameTotalPercentual">0.00%</td>
             </tr>
           </tbody>
         </table>
@@ -424,25 +430,14 @@ tbody tr:nth-child(even) {
     import { Key } from './key.js';
     import { HarmonicField } from './harmonicFields.js';
     import { Player } from './player.js';
+    import { Game } from './games.js';
 
     let key = "c";
     let mode = "ionian";
     let degrees = [1, 3, 5];
     let waveType = "triangle";
     let octave = 4;
-    let noteToGuess = null;
-    let noteToGuessDegree = null;
-    let considerAnswerToScore = true;
-    let correctAnswer = false;
-    let fundamentalScore = [0, 0];
-    let supertonicScore = [0, 0];
-    let mediantScore = [0, 0];
-    let subdominantScore = [0, 0];
-    let dominantScore = [0, 0];
-    let submediantScore = [0, 0];
-    let leadingToneScore = [0, 0];
-    let totalScore = 0;
-    let totalGuesses = 0;
+    window.guessNoteDegreeGame = new Game("gndGame", "Adivinhe o Grau no Campo Harmônico");
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     window.player = new Player(audioCtx, waveType);
@@ -484,6 +479,7 @@ tbody tr:nth-child(even) {
 
     function setKey() {
       globalThis.key = new Key(key, mode, degrees, octave);
+      globalThis.guessNoteDegreeGame = new Game("gndGame", "Adivinhe o Grau no Campo Harmônico", globalThis.key);
     }
 
     window.playScale = function () {
@@ -510,104 +506,6 @@ tbody tr:nth-child(even) {
       const volume = parseFloat(document.getElementById('volume').value)/100;
       globalThis.key.harmonicField.chords[degree].play(window.player, volume, duration);
     }
-
-    window.playBaseChord = function () {
-      const duration = parseFloat(document.getElementById('durationBaseChord').value);
-      const volume = parseFloat(document.getElementById('volume').value)/100;
-      globalThis.key.harmonicField.chords[0].play(window.player, volume, duration);
-    }
-
-    window.playNoteToGuess = function () {
-      const duration = parseFloat(document.getElementById('durationNoteToGuess').value);
-      const volume = parseFloat(document.getElementById('volume').value)/100;
-      noteToGuess.play(window.player, volume, duration);
-    }
-
-    window.drawNote = function () {
-      updateScores();
-
-      const notes = globalThis.key.extendedScale;
-      const randomIndex = Math.floor(Math.random() * notes.length);
-      considerAnswerToScore = true;
-      noteToGuess = notes[randomIndex];
-      document.getElementById('guessDegreeResult').textContent = ``;
-      globalThis.playNoteToGuess();
-
-      if (randomIndex === 0 || randomIndex === 7 || randomIndex === 14) {
-        noteToGuessDegree = fundamentalScore;
-      } else if (randomIndex ===  1 || randomIndex === 8 || randomIndex === 15) {
-        noteToGuessDegree = supertonicScore;
-      } else if (randomIndex === 2 || randomIndex === 9 || randomIndex === 16) {
-        noteToGuessDegree = mediantScore;
-      } else if (randomIndex === 3 || randomIndex === 10 || randomIndex === 17) {
-        noteToGuessDegree = subdominantScore;
-      } else if (randomIndex === 4 || randomIndex === 11 || randomIndex === 18) {
-        noteToGuessDegree = dominantScore;
-      } else if (randomIndex === 5 || randomIndex === 12 || randomIndex === 19) {
-        noteToGuessDegree = submediantScore;
-      } else if (randomIndex === 6 || randomIndex === 13 || randomIndex === 20) {
-        noteToGuessDegree = leadingToneScore;
-      }
-    }
-
-    window.guessNote = function (note) {
-      const notes = globalThis.key.extendedScale;
-      let guessedNote = notes[note];
-      if (guessedNote.name === noteToGuess.name) {
-        console.log("Resposta Correta!");
-        correctAnswer = true;
-        document.getElementById('guessDegreeResult').textContent = `Resposta Correta! A nota sorteada foi ${noteToGuess.name}.`;
-        if (considerAnswerToScore) {
-          noteToGuessDegree[0] += 1; // Incrementa o acerto
-          noteToGuessDegree[1] += 1; // Incrementa o total de tentativas
-          totalScore += 1;
-          totalGuesses += 1;
-        }
-      } else {
-        console.log("Resposta Errada!");
-        document.getElementById('guessDegreeResult').textContent = `Resposta Errada!`;
-        if (considerAnswerToScore) {
-          noteToGuessDegree[1] += 1; // Incrementa o total de tentativas
-          totalGuesses += 1;
-        }
-      }     
-document.getElementById('totalScore').textContent = totalScore;
-       document.getElementById('totalGuesses').textContent = totalGuesses;
-       document.getElementById('totalPercentual').textContent = (totalGuesses > 0) ? ((totalScore / totalGuesses) * 100).toFixed(2) + '%' : '0%';;
-      considerAnswerToScore = false;
-    }
-
-    function updateScores() {
-      document.getElementById('fundamentalScore').textContent = fundamentalScore[0];
-      document.getElementById('fundamentalTotal').textContent = fundamentalScore[1];
-      document.getElementById('fundamentalPercentual').textContent = (fundamentalScore[1] > 0) ? ((fundamentalScore[0] / fundamentalScore[1]) * 100).toFixed(2) + '%' : '0%';
-
-      document.getElementById('supertonicScore').textContent = supertonicScore[0];
-      document.getElementById('supertonicTotal').textContent = supertonicScore[1];
-      document.getElementById('supertonicPercentual').textContent = (supertonicScore[1] > 0) ? ((supertonicScore[0] / supertonicScore[1]) * 100).toFixed(2) + '%' : '0%';
-
-      document.getElementById('mediantScore').textContent = mediantScore[0];
-      document.getElementById('mediantTotal').textContent = mediantScore[1];
-      document.getElementById('mediantPercentual').textContent = (mediantScore[1] > 0) ? ((mediantScore[0] / mediantScore[1]) * 100).toFixed(2) + '%' : '0%';
-
-      document.getElementById('subdominantScore').textContent = subdominantScore[0];
-      document.getElementById('subdominantTotal').textContent = subdominantScore[1];
-      document.getElementById('subdominantPercentual').textContent = (subdominantScore[1] > 0) ? ((subdominantScore[0] / subdominantScore[1]) * 100).toFixed(2) + '%' : '0%';
-
-      document.getElementById('dominantScore').textContent = dominantScore[0];
-      document.getElementById('dominantTotal').textContent = dominantScore[1];
-      document.getElementById('dominantPercentual').textContent = (dominantScore[1] > 0) ? ((dominantScore[0] / dominantScore[1]) * 100).toFixed(2) + '%' : '0%';
-
-      document.getElementById('submediantScore').textContent = submediantScore[0];
-      document.getElementById('submediantTotal').textContent = submediantScore[1];
-      document.getElementById('submediantPercentual').textContent = (submediantScore[1] > 0) ? ((submediantScore[0] / submediantScore[1]) * 100).toFixed(2) + '%' : '0%';
-
-      document.getElementById('leadingToneScore').textContent = leadingToneScore[0];
-      document.getElementById('leadingToneTotal').textContent = leadingToneScore[1];
-      document.getElementById('leadingTonePercentual').textContent = (leadingToneScore[1] > 0) ? ((leadingToneScore[0] / leadingToneScore[1]) * 100).toFixed(2) + '%' : '0%';
-      
-    }
-
 
 
   </script>
