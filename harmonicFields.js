@@ -68,6 +68,21 @@ class HarmonicField {
       });
     }
 
+
+    playDescending(player, volume = 0.5, duration = 0.5) {
+      let chords = [];
+
+      for (let i=this.chords.length-1; i>=0; i--) {
+        chords = chords.concat(this.chords[i]);
+      }
+
+      chords.forEach((chord, index) => {
+          setTimeout(() => {
+              chord.play(player, volume, duration);
+          }, index * duration * 1000);
+      });
+    }
+
 }
 
 export { HarmonicField }

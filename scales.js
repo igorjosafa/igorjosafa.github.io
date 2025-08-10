@@ -59,6 +59,19 @@ class sevenNotesScale {
           }, index * duration * 1000);
       });
     }
+  
+  playDescending(player, volume = 0.5, duration = 0.5) {
+      let notes = [];
+      for (let i=this.scaleNotes.length-1; i>=0; i--) {
+        notes = notes.concat(this.scaleNotes[i])
+      }
+
+      notes.forEach((note, index) => {
+          setTimeout(() => {
+              note.play(player, volume, duration);
+          }, index * duration * 1000);
+      });
+    }
 }
 
 class ionianScale extends sevenNotesScale {

@@ -264,8 +264,9 @@ tbody tr:nth-child(even) {
         <button onclick="playSelectedNote(7)">Oitava</button>
       </div>
     </div>
-    <div style="margin-top: 15px;">
+    <div class="flex-container" style="margin-top: 15px;">
       <button onclick="playScale()">Tocar a escala</button>
+      <button onclick="playScaleDescending()">Tocar a escala descendentemente</button>
     </div>
   </div>
 
@@ -284,6 +285,7 @@ tbody tr:nth-child(even) {
 
     <div style="margin-top: 15px;">
       <button onclick="playHarmonicField()">Tocar o campo harmônico</button>
+      <button onclick="playHarmonicFieldDescending()">Tocar o campo harmônico descendente</button>
     </div>
   </div>
 
@@ -303,44 +305,43 @@ tbody tr:nth-child(even) {
         <li>Após clicar em um botão, você receberá um feedback indicando se a sua resposta está correta ou errada.</li>
         <li>O sistema também manterá um registro do seu desempenho, mostrando o número de acertos e o percentual de acertos para cada grau.</li>
       </ol>
-      <div>
+      <div class="exerciseSettings">
         <div class="flex-container">
-        <p>Duração do acorde de base</p>
-        <select id="gndGameDurationBaseChord">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5" selected>5</option>
-          <option value="10">10</option>
-          <option value="15">15</option>
-          <option value="20">20</option>
-        </select>
+          <p>Duração do acorde de base</p>
+          <select id="gndGameDurationBaseChord">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
         </div>
         <div class="flex-container">
-        <p>Duração da nota</p>
-        <select id="gndGameDurationNoteToGuess">
-          <option value="0.5" selected>0.5</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          </div>
-        </select>
+          <p>Duração da nota</p>
+          <select id="gndGameDurationNoteToGuess">
+            <option value="0.5" selected>0.5</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
       </div>
-      <div class="flex-container " style="margin-top: 30px;">
-        <button onclick="guessNoteDegreeGame.beginRound()">Sortear nota</button>
-      </div>
-      <div class="flex-container" style="margin-top: 30px;">
-        <button onclick="guessNoteDegreeGame.playBaseChord()">Tocar I grau</button>
-        <button onclick="guessNoteDegreeGame.playNoteToGuess()">Tocar nota sorteada novamente</button>
-      </div>
-      <div class="flex-container" style="margin-top: 30px;">
-        <button onclick="guessNoteDegreeGame.playScaleUpToNoteToGuess()">Tocar escala até a nota sorteada</button>
-        <button onclick="guessNoteDegreeGame.playScaleUpFromNoteToGuess()">Tocar escala partindo da nota</button>
-        <button onclick="guessNoteDegreeGame.playScaleDownFromNoteToGuess()">Tocar escala descendente partindo da nota</button>
-      </div>
+      <div class="exerciseArea">
+        <div class="flex-container" style="margin-top: 30px;">
+          <button onclick="guessNoteDegreeGame.beginRound()">Sortear nota</button>
+        </div>
+        <div class="flex-container">
+          <button onclick="guessNoteDegreeGame.playBaseChord()">Tocar I grau</button>
+          <button onclick="guessNoteDegreeGame.playNoteToGuess()">Tocar nota novamente</button>
+          <button onclick="guessNoteDegreeGame.playScaleUpToNoteToGuess()">Tocar escala até a nota</button>
+          <button onclick="guessNoteDegreeGame.playScaleUpFromNoteToGuess()">Tocar escala partindo da nota</button>
+          <button onclick="guessNoteDegreeGame.playScaleDownFromNoteToGuess()">Tocar descendentemente partindo da nota</button>
+        </div>
       <div id="answerField"style="margin-top: 30px;">
         <h3>Qual é o grau da nota sorteada?</h3>
         <div id="gndGameGuessedAnswer"></div>
@@ -417,6 +418,7 @@ tbody tr:nth-child(even) {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
       <div>
 
@@ -488,6 +490,12 @@ tbody tr:nth-child(even) {
       globalThis.key.playScale(window.player, volume, duration);
     }
 
+    window.playScaleDescending = function () {
+      const duration = parseFloat(document.getElementById('duration').value);
+      const volume = parseFloat(document.getElementById('volume').value)/100;
+      globalThis.key.playScaleDescending(window.player, volume, duration);
+    }
+
     window.playSelectedNote = function (note) {
       const duration = parseFloat(document.getElementById('duration').value);
       const volume = parseFloat(document.getElementById('volume').value)/100;
@@ -499,6 +507,13 @@ tbody tr:nth-child(even) {
       const duration = parseFloat(document.getElementById('duration').value);
       const volume = parseFloat(document.getElementById('volume').value)/100;
       globalThis.key.playHarmonicField(window.player, volume, duration);
+    }
+
+
+    window.playHarmonicFieldDescending = function () {
+      const duration = parseFloat(document.getElementById('duration').value);
+      const volume = parseFloat(document.getElementById('volume').value)/100;
+      globalThis.key.playHarmonicFieldDescending(window.player, volume, duration);
     }
 
     window.playSelectedDegree = function (degree) {

@@ -32,8 +32,16 @@ class Key {
         this.scale.play(play, volume, duration)
     }
 
+    playScaleDescending(play, volume = 0.5, duration = 0.5) {
+        this.scale.playDescending(play, volume, duration)
+    }
+
     playHarmonicField(play, volume = 0.5, duration = 0.5) {
         this.harmonicField.play(play, volume, duration)
+    }
+
+    playHarmonicFieldDescending(play, volume = 0.5, duration = 0.5) {
+        this.harmonicField.playDescending(play, volume, duration)
     }
 
 }
