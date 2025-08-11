@@ -1,3 +1,5 @@
+import { svgElements } from './svgElements.js';
+
 class Game {
   constructor(nameId, title, key) {
     this.nameId = nameId;
@@ -81,12 +83,57 @@ class Game {
         headerContent.appendChild(label);
 
         if (i === this.noteToCheck) {
-            const playNoteButton = document.createElement("button");
-            playNoteButton.innerText = "Tocar";
-            playNoteButton.onclick = () => {
+            const playNoteToGuessButton = document.createElement("button");
+            playNoteToGuessButton.title = "Tocar a nota selecionada";
+            playNoteToGuessButton.onclick = () => {
                 this.playNoteToGuess();
             };
-            headerContent.appendChild(playNoteButton);
+
+            const svgPlayNoteToGuess = new svgElements(
+                "bi bi-play-fill", 
+                "m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"
+            ).createSvgElement();
+            playNoteToGuessButton.appendChild(svgPlayNoteToGuess);
+            headerContent.appendChild(playNoteToGuessButton);
+
+            const playScaleUpToNoteToGuessButton = document.createElement("button");
+            playScaleUpToNoteToGuessButton.title = "Tocar escala até a nota selecionada";
+            playScaleUpToNoteToGuessButton.onclick = () => {
+                this.playScaleUpToNoteToGuess();
+            };
+
+            const svgPlayScaleUpToNoteToGuess = new svgElements(
+                "bi bi-chevron-bar-right", 
+                "M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0M11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5"
+            ).createSvgElement();
+            playScaleUpToNoteToGuessButton.appendChild(svgPlayScaleUpToNoteToGuess);
+            headerContent.appendChild(playScaleUpToNoteToGuessButton);
+
+            const playScaleDownFromNoteToGuessButton = document.createElement("button");
+            playScaleDownFromNoteToGuessButton.title = "Tocar escala descendente partindo da nota selecionada";
+            playScaleDownFromNoteToGuessButton.onclick = () => {
+                this.playScaleDownFromNoteToGuess();
+            };
+
+            const svgPlayScaleDownFromNoteToGuess = new svgElements(
+                "bi bi-arrow-bar-left", 
+                "M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5"
+            ).createSvgElement();
+            playScaleDownFromNoteToGuessButton.appendChild(svgPlayScaleDownFromNoteToGuess);
+            headerContent.appendChild(playScaleDownFromNoteToGuessButton);
+
+            const playScaleUpFromNoteToGuessButton = document.createElement("button");
+            playScaleUpFromNoteToGuessButton.title = "Tocar escala partindo da nota selecionada";
+            playScaleUpFromNoteToGuessButton.onclick = () => {
+                this.playScaleUpFromNoteToGuess();
+            };
+
+            const svgPlayScaleUpFromNoteToGuess = new svgElements(
+                "bi bi-arrow-bar-right", 
+                "M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8m-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5"
+            ).createSvgElement();
+            playScaleUpFromNoteToGuessButton.appendChild(svgPlayScaleUpFromNoteToGuess);
+            headerContent.appendChild(playScaleUpFromNoteToGuessButton);
         }
 
         th.appendChild(headerContent);
@@ -195,9 +242,9 @@ class Game {
                 this.acertos += 1;
             }
         }
-        this.totalPercentage = this.acertos / this.questions
+        this.totalPercentage = this.acertos / this.questions * 100;
         this.percentageCorrectAnswers[this.notesDegrees[this.noteToCheck]] = (
-            this.possibleAnswersScore[this.notesDegrees[this.noteToCheck]] / this.possibleAnswersCount[this.notesDegrees[this.noteToCheck]])
+            this.possibleAnswersScore[this.notesDegrees[this.noteToCheck]] / this.possibleAnswersCount[this.notesDegrees[this.noteToCheck]]) * 100;
     }
 
     this.#showGuessResult();
