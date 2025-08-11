@@ -330,21 +330,32 @@ tbody tr:nth-child(even) {
             <option value="5">5</option>
           </select>
         </div>
+        <div class="flex-container">
+          <p>Quantidade de notas sorteadas</p>
+          <select onchange="guessNoteDegreeGame.updateNumberOfNotes(parseInt(this.value))" id="gndGameHowManyNotes">
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+            <option value=4>4</option>
+            <option value=5>5</option>
+          </select>
+        </div>
       </div>
       <div class="exerciseArea">
         <div class="flex-container" style="margin-top: 30px;">
-          <button onclick="guessNoteDegreeGame.beginRound()">Sortear nota</button>
+          <button onclick="guessNoteDegreeGame.beginRound()">Sortear nota (s)</button>
         </div>
         <div class="flex-container">
           <button onclick="guessNoteDegreeGame.playBaseChord()">Tocar I grau</button>
-          <button onclick="guessNoteDegreeGame.playNoteToGuess()">Tocar nota novamente</button>
-          <button onclick="guessNoteDegreeGame.playScaleUpToNoteToGuess()">Tocar escala até a nota</button>
-          <button onclick="guessNoteDegreeGame.playScaleUpFromNoteToGuess()">Tocar escala partindo da nota</button>
-          <button onclick="guessNoteDegreeGame.playScaleDownFromNoteToGuess()">Tocar descendentemente partindo da nota</button>
+          <button onclick="guessNoteDegreeGame.playNotesToGuess()">Tocar notas novamente</button>
+          <button onclick="guessNoteDegreeGame.playScaleUpToNoteToGuess()">Tocar escala até a nota selecionada</button>
+          <button onclick="guessNoteDegreeGame.playScaleUpFromNoteToGuess()">Tocar escala partindo da nota selecionada</button>
+          <button onclick="guessNoteDegreeGame.playScaleDownFromNoteToGuess()">Tocar descendentemente partindo da nota selecionada</button>
         </div>
       <div id="answerField"style="margin-top: 30px;">
-        <h3>Qual é o grau da nota sorteada?</h3>
+        <h3>Qual(is) é(são) o(s) grau(s) da(s) nota(s) sorteada(s)?</h3>
         <div id="gndGameGuessedAnswer"></div>
+        <div id="gndGameSelectNoteToCheck"></div>
         <div class="flex-container">
         <button onclick="guessNoteDegreeGame.checkNoteAnswer('FirstDegree')">Fundamental</button>
         <button onclick="guessNoteDegreeGame.checkNoteAnswer('SecondDegree')">Supertônica</button>
@@ -439,7 +450,7 @@ tbody tr:nth-child(even) {
     let degrees = [1, 3, 5];
     let waveType = "triangle";
     let octave = 4;
-    window.guessNoteDegreeGame = new Game("gndGame", "Adivinhe o Grau no Campo Harmônico");
+    window.guessNoteDegreeGame = new Game("gndGame", "Adivinhe os Graus no Campo Harmônico");
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     window.player = new Player(audioCtx, waveType);
