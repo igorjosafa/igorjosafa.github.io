@@ -478,13 +478,28 @@ tbody tr:nth-child(even) {
             <option value=5>5</option>
           </select>
         </div>
+        <div id="gcnGameDegreeSelection" class="flex-container" onchange="guessChordNotesGame.updatePossibleNotes()">
+          <p>Notas que podem compor os acordes sorteados</p>
+          <div>
+            <label><input class="gcnGameDegrees" type="checkbox" name="1"/>2º</label>
+            <label><input class="gcnGameDegrees" type="checkbox" name="2"/>3º</label>
+            <label><input class="gcnGameDegrees" type="checkbox" name="3"/>4º</label>
+            <label><input class="gcnGameDegrees" type="checkbox" name="4" checked/>5º</label>
+            <label><input class="gcnGameDegrees" type="checkbox" name="5"/>6º</label>
+            <label><input class="gcnGameDegrees" type="checkbox" name="6"/>7º</label>
+            <label><input class="gcnGameDegrees" type="checkbox" name="7"/>8º</label>
+            <label><input class="gcnGameDegrees" type="checkbox" name="8"/>9º</label>
+            <label><input class="gcnGameDegrees" type="checkbox" name="10"/>11º</label>
+            <label><input class="gcnGameDegrees" type="checkbox" name="12"/>13º</label>
+          </div>
+        </div>
       </div>
       <div class="exerciseArea">
         <div class="flex-container" style="margin-top: 30px;">
-          <button onclick="guessChordNotesGame.beginRound()">Sortear nota (s)</button>
+          <button onclick="guessChordNotesGame.beginRound()">Sortear acorde</button>
         </div>
       <div id="answerField"style="margin-top: 30px;">
-        <h3>Qual(is) é(são) o(s) grau(s) da(s) nota(s) sorteada(s)?</h3>
+        <h3>Quais notas compõem o acorde?</h3>
         <div id="gcnGameGuessedAnswer"></div>
         <div id="repeatControls">
           <button onclick="guessChordNotesGame.playBaseChord()" title="Tocar o acorde de referência">
@@ -499,15 +514,18 @@ tbody tr:nth-child(even) {
         </div>
         <div id="gcnGameSelectNoteToCheck" style="margin-top: 10px;"></div>
         <div class="flex-container">
-        <button onclick="guessChordNotesGame.checkNoteAnswer('FirstDegree')">Fundamental</button>
-        <button onclick="guessChordNotesGame.checkNoteAnswer('SecondDegree')">Supertônica</button>
-        <button onclick="guessChordNotesGame.checkNoteAnswer('ThirdDegree')">Mediantes</button>
-        <button onclick="guessChordNotesGame.checkNoteAnswer('FourthDegree')">Subdominante</button>
+        <button id="gcnGame2Button" onclick="guessChordNotesGame.checkNoteAnswer(1, this.id)">2º</button>
+        <button id="gcnGame3Button" onclick="guessChordNotesGame.checkNoteAnswer(2, this.id)">3º</button>
+        <button id="gcnGame4Button" onclick="guessChordNotesGame.checkNoteAnswer(3, this.id)">4º</button>
+        <button id="gcnGame5Button" onclick="guessChordNotesGame.checkNoteAnswer(4, this.id)">5º</button>
+        <button id="gcnGame6Button" onclick="guessChordNotesGame.checkNoteAnswer(5, this.id)">6º</button>
         </div>
         <div class="flex-container">
-        <button onclick="guessChordNotesGame.checkNoteAnswer('FifthDegree')">Dominante</button>
-        <button onclick="guessChordNotesGame.checkNoteAnswer('SixthDegree')">Submediantes</button>
-        <button onclick="guessChordNotesGame.checkNoteAnswer('SeventhDegree')">Sensível</button>
+        <button id="gcnGame7Button" onclick="guessChordNotesGame.checkNoteAnswer(6, this.id)">7º</button>
+        <button id="gcnGame8Button" onclick="guessChordNotesGame.checkNoteAnswer(7, this.id)">8º</button>
+        <button id="gcnGame9Button" onclick="guessChordNotesGame.checkNoteAnswer(8, this.id)">9º</button>
+        <button id="gcnGame10Button" onclick="guessChordNotesGame.checkNoteAnswer(9, this.id)">11º</button>
+        <button id="gcnGame12Button" onclick="guessChordNotesGame.checkNoteAnswer(11, this.id)">13º</button>
         </div>
       </div>
       <div id="scoreField" style="margin-top: 15px;">
@@ -517,48 +535,75 @@ tbody tr:nth-child(even) {
               <th>Grau</th>
               <th>Acertos</th>
               <th>Erros</th>
+              <th>Aproveitamento de tentativas</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Fundamental</td>
-              <td id="gcnGameFirstDegreeScore">0</td>
-              <td id="gcnGameFirstDegreeTotal">0</td>
+              <td>2º</td>
+              <td id="gcnGame1Correct">0</td>
+              <td id="gcnGame1Wrong">0</td>
+              <td id="gcnGame1Percentage">0.00%</td>
             </tr>
             <tr>
-              <td>Supertônica</td>
-              <td id="gcnGameSecondDegreeScore">0</td>
-              <td id="gcnGameSecondDegreeTotal">0</td>
+              <td>3º</td>
+              <td id="gcnGame2Correct">0</td>
+              <td id="gcnGame2Wrong">0</td>
+              <td id="gcnGame2Percentage">0.00%</td>
             </tr>
             <tr>
-              <td>Mediante</td>
-              <td id="gcnGameThirdDegreeScore">0</td>
-              <td id="gcnGameThirdDegreeTotal">0</td>
+              <td>4º</td>
+              <td id="gcnGame3Correct">0</td>
+              <td id="gcnGame3Wrong">0</td>
+              <td id="gcnGame3Percentage">0.00%</td>
             </tr>
             <tr>
-              <td>Subdominante</td>
-              <td id="gcnGameFourthDegreeScore">0</td>
-              <td id="gcnGameFourthDegreeTotal">0</td>
+              <td>5º</td>
+              <td id="gcnGame4Correct">0</td>
+              <td id="gcnGame4Wrong">0</td>
+              <td id="gcnGame4Percentage">0.00%</td>
             </tr>
             <tr>
-              <td>Dominante</td>
-              <td id="gcnGameFifthDegreeScore">0</td>
-              <td id="gcnGameFifthDegreeTotal">0</td>
+              <td>6º</td>
+              <td id="gcnGame5Correct">0</td>
+              <td id="gcnGame5Wrong">0</td>
+              <td id="gcnGame5Percentage">0.00%</td>
             </tr>
             <tr>
-              <td>Submediante</td>
-              <td id="gcnGameSixthDegreeScore">0</td>
-              <td id="gcnGameSixthDegreeTotal">0</td>
+              <td>7º</td>
+              <td id="gcnGame6Correct">0</td>
+              <td id="gcnGame6Wrong">0</td>
+              <td id="gcnGame6Percentage">0.00%</td>
             </tr>
             <tr>
-              <td>Sensível</td>
-              <td id="gcnGameSeventhDegreeScore">0</td>
-              <td id="gcnGameSeventhDegreeTotal">0</td>
+              <td>8º</td>
+              <td id="gcnGame7Correct">0</td>
+              <td id="gcnGame7Wrong">0</td>
+              <td id="gcnGame7Percentage">0.00%</td>
+            </tr>
+            <tr>
+              <td>9º</td>
+              <td id="gcnGame8Correct">0</td>
+              <td id="gcnGame8Wrong">0</td>
+              <td id="gcnGame8Percentage">0.00%</td>
+            </tr>
+            <tr>
+              <td>11º</td>
+              <td id="gcnGame10Correct">0</td>
+              <td id="gcnGame10Wrong">0</td>
+              <td id="gcnGame10Percentage">0.00%</td>
+            </tr>
+            <tr>
+              <td>13º</td>
+              <td id="gcnGame12Correct">0</td>
+              <td id="gcnGame12Wrong">0</td>
+              <td id="gcnGame12Percentage">0.00%</td>
             </tr>
             <tr>
               <td>Total</td>
-              <td id="gcnGameTotalScore">0</td>
-              <td id="gcnGameTotalGuesses">0</td>
+              <td id="gcnGameTotalCorrect">0</td>
+              <td id="gcnGameTotalWrong">0</td>
+              <td id="gcnGamePercentage">0.00%</td>
             </tr>
           </tbody>
         </table>

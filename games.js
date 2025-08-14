@@ -382,25 +382,70 @@ class guessChordNotesGame extends Game {
         this.key = key;
         this.title = this.title + ` - ${this.key}`;
         this.howManyNotes = 1;
-        this.notesDegrees = [];
+        this.erros = 0;
+        this.drawnIndexes = [];
 
-        this.possibleAnswersScore = {
-            'SecondDegree': 0,
-            'ThirdDegree': 0,
-            'FourthDegree': 0,
-            'FifthDegree': 0,
-            'SixthDegree': 0,
-            'SeventhDegree': 0
+        this.possibleNotes = [];
+        this.updatePossibleNotes();
+        this.possibleIndexes = [
+            1, 2, 3, 4, 5, 6, 7, 8, 10, 12
+        ]
+
+        this.correctAnswers = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            10: 0,
+            12: 0
+        };
+
+        this.wrongAnswers = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            10: 0,
+            12: 0
         };
 
         document.getElementById(`${this.nameId}Title`).textContent = this.title;
     }
 
+    updatePossibleNotes() {
+        this.possibleNotes = [];
+        const checkboxes = document.querySelectorAll(`.${this.nameId}Degrees`);
+        checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+                let possibleIndex = parseInt(checkbox.name);
+                this.possibleNotes.push(this.key.extendedScale[possibleIndex]);
+            }
+        });
+    }
+
     beginRound() {
-        const possibleNotes = this.key.scale.scaleNotes.filter(note => note.frequency != this.key.scale.firstNote.frequency)
-        super.beginRound(possibleNotes);
-        this.#getAnswerDegrees();
+        super.beginRound(this.possibleNotes);
+        this.reenableButtons();
+        this.drawnIndexes = this.notesToGuess.map(item => this.key.extendedScale.indexOf(item));
         this.playChordToGuess();
+    }
+
+    reenableButtons() {
+        this.possibleIndexes.forEach((index) => {
+            const button = document.getElementById(`${this.nameId}${index}Button`);
+            if (button) {
+                button.disabled = false;
+                button.style = "cursor: pointer;";
+            }
+        });
     }
 
     updateNumberOfNotes(howManyNotes) {
@@ -423,26 +468,21 @@ class guessChordNotesGame extends Game {
         this.key.harmonicField.chords[0].play(window.player, volume, duration);
         }
 
-    checkNoteAnswer(guessedDegree) {
-        this.correctAnswer = this.notesDegrees.includes(guessedDegree);
+    checkNoteAnswer(indexGuessedDegree, buttonId) {
+        const button = document.getElementById(buttonId);
+        button.disabled = true;
+        button.style = "cursor: not-allowed;";
+
+        this.correctAnswer = this.drawnIndexes.includes(indexGuessedDegree);
 
         this.questions += 1;
         if (this.correctAnswer) {
-            this.possibleAnswersScore[guessedDegree] += 1;
+            this.correctAnswers[indexGuessedDegree] += 1;
             this.acertos += 1;
+        } else {
+            this.wrongAnswers[indexGuessedDegree] += 1;
+            this.erros += 1;
         }
-
-        // if (this.considerAnswerToScore[this.noteToCheck]) {
-        //     this.questions += 1;
-        //     this.possibleAnswersCount[this.notesDegrees[this.noteToCheck]] += 1;
-        //     if (this.correctAnswer) {
-        //         this.possibleAnswersScore[this.notesDegrees[this.noteToCheck]] += 1;
-        //         this.acertos += 1;
-        //     }
-        //     this.totalPercentage = this.acertos / this.questions * 100;
-        //     this.percentageCorrectAnswers[this.notesDegrees[this.noteToCheck]] = (
-        //         this.possibleAnswersScore[this.notesDegrees[this.noteToCheck]] / this.possibleAnswersCount[this.notesDegrees[this.noteToCheck]]) * 100;
-        // }
 
         this.#showGuessResult();
         this.#updateScore();
@@ -460,33 +500,15 @@ class guessChordNotesGame extends Game {
     }
 
 
-    #getAnswerDegrees() {
-        this.notesDegrees = []
-        this.notesIndex.forEach((noteIndex) => {
-            if (noteIndex === 0) {
-                this.notesDegrees = this.notesDegrees.concat(['SecondDegree']);
-            } else if (noteIndex === 1) {
-                this.notesDegrees = this.notesDegrees.concat(['ThirdDegree']);
-            } else if (noteIndex === 2) {
-                this.notesDegrees = this.notesDegrees.concat(['FourthDegree']);
-            } else if (noteIndex === 3 ) {
-                this.notesDegrees = this.notesDegrees.concat(['FifthDegree']);
-            } else if (noteIndex === 4) {
-                this.notesDegrees = this.notesDegrees.concat(['SixthDegree']);
-            } else if (noteIndex === 5) {
-                this.notesDegrees = this.notesDegrees.concat(['SeventhDegree']);
-            }
-            
-        });
-    }
-
-
     #updateScore() {
-        this.notesDegrees.forEach((degree) => {
-            document.getElementById(`${this.nameId}${degree}Score`).textContent = this.possibleAnswersScore[degree];
+        this.possibleIndexes.forEach((index) => {
+            document.getElementById(`${this.nameId}${index}Correct`).textContent = this.correctAnswers[index];
+            document.getElementById(`${this.nameId}${index}Wrong`).textContent = this.wrongAnswers[index];
+            document.getElementById(`${this.nameId}${index}Percentage`).textContent = ((this.correctAnswers[index] / (this.correctAnswers[index] + this.wrongAnswers[index])) * 100).toFixed(2) + "%";
 
-            document.getElementById(`${this.nameId}TotalScore`).textContent = this.acertos;
-            document.getElementById(`${this.nameId}TotalGuesses`).textContent = this.questions;
+            document.getElementById(`${this.nameId}TotalCorrect`).textContent = this.acertos;
+            document.getElementById(`${this.nameId}TotalWrong`).textContent = this.erros;
+            document.getElementById(`${this.nameId}Percentage`).textContent = ((this.acertos / (this.acertos + this.erros)) * 100).toFixed(2) + "%";
         });
     }
     
