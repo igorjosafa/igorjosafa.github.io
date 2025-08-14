@@ -1,13 +1,68 @@
 import { svgElements } from './svgElements.js';
 
 class Game {
+    constructor(nameId, title) {
+        this.nameId = nameId;
+        this.title = title;
+        this.acertos = 0;
+        this.questions = 0;
+        this.totalPercentage = 0.0;
+    }
+
+    #getRandomNotes(possibleNotes) {
+        let leastNote = 0;
+        let mostNote = 20;
+        let index = Math.floor(Math.random() * possibleNotes.length);
+        if (index < 7) {
+            leastNote = 0;
+            mostNote = 6;
+        } else if (index < 14) {
+            leastNote = 7;
+            mostNote = 13;
+        } else if (index < 21) {
+            leastNote = 14;
+            mostNote = 20;
+        }
+
+        this.notesIndex = [index];
+        this.notesToGuess = [possibleNotes[index]];
+        this.considerAnswerToScore = [true];
+        for (let i=1; i<this.howManyNotes; i++) {
+            let index = Math.floor(Math.random() * possibleNotes.length)
+            while (index < leastNote || index > mostNote) {
+                index = Math.floor(Math.random() * possibleNotes.length);
+            }
+            this.notesIndex.push(index);
+            this.notesToGuess.push(possibleNotes[index]);
+            this.considerAnswerToScore.push(true);
+        }
+    }
+
+    beginRound(possibleNotes) {
+        this.#endPreviousRound();
+        this.#selectNewNotes(possibleNotes);
+    }
+
+    #selectNewNotes(possibleNotes) {
+        this.#getRandomNotes(possibleNotes);
+        this.considerAnswerToScore[this.noteToCheck] = true;
+    }
+
+    #endPreviousRound() {
+        this.#cleanGuessResult();
+    }
+
+    #cleanGuessResult() {
+        document.getElementById(`${this.nameId}GuessedAnswer`).textContent = ``;
+    }
+}
+
+
+class guessNoteDegree extends Game {
   constructor(nameId, title, key) {
-    this.nameId = nameId;
+    super(nameId, title);
     this.key = key;
-    this.title = title + ` - ${this.key}`;
-    this.acertos = 0;
-    this.questions = 0;
-    this.totalPercentage = 0.0;
+    this.title = super.title + ` - ${this.key}`;
     this.possibleAnswersScore = {
         'FirstDegree': 0,
         'SecondDegree': 0,
@@ -144,7 +199,7 @@ class Game {
         const radio = document.createElement("input");
         radio.type = "radio";
         radio.name = "how-many-notes";
-        radio.onclick = () => guessNoteDegreeGame.updateNoteToCheck(i);
+        radio.onclick = () => this.updateNoteToCheck(i);
         if (i === this.noteToCheck) {
             radio.checked = true;
         }
@@ -158,37 +213,8 @@ class Game {
     container.appendChild(table);
     }
 
-  #getRandomNote() {
-    const possibleNotes = this.key.extendedScale;
-    let leastNote = 0;
-    let mostNote = 20;
-    let index = Math.floor(Math.random() * possibleNotes.length);
-    if (index < 7) {
-        leastNote = 0;
-        mostNote = 6;
-    } else if (index < 14) {
-        leastNote = 7;
-        mostNote = 13;
-    } else if (index < 21) {
-        leastNote = 14;
-        mostNote = 20;
-    }
 
-    this.notesIndex = [index];
-    this.notesToGuess = [possibleNotes[index]];
-    this.considerAnswerToScore = [true];
-    for (let i=1; i<this.howManyNotes; i++) {
-        let index = Math.floor(Math.random() * possibleNotes.length)
-        while (index < leastNote || index > mostNote) {
-            index = Math.floor(Math.random() * possibleNotes.length);
-        }
-        this.notesIndex.push(index);
-        this.notesToGuess.push(possibleNotes[index]);
-        this.considerAnswerToScore.push(true);
-    }
-  }
-
-  #getAnswerDegree() {
+  #getAnswerDegrees() {
     this.notesDegrees = []
     this.notesIndex.forEach((noteIndex) => {
         if (noteIndex === 0 || noteIndex === 7 || noteIndex === 14 || noteIndex === 21) {
@@ -210,23 +236,13 @@ class Game {
     });
   }
 
-  #endPreviousRound() {
-    this.#cleanGuessResult();
+
+  beginRound() {
     if (this.notesToGuess.length > 0) {
         this.#updateScore();
     }
-  }
-
-  #selectNewNote() {
-    this.#getRandomNote();
-    this.#getAnswerDegree();
-    this.considerAnswerToScore[this.noteToCheck] = true;
-
-  }
-
-  beginRound() {
-    this.#endPreviousRound();
-    this.#selectNewNote();
+    super.beginRound(this.key.extendedScale);
+    this.#getAnswerDegrees();
     this.playNotesToGuess();
   }
 
@@ -237,10 +253,8 @@ class Game {
         this.questions += 1;
         this.possibleAnswersCount[this.notesDegrees[this.noteToCheck]] += 1;
         if (this.correctAnswer) {
-            if (this.correctAnswer) {
-                this.possibleAnswersScore[this.notesDegrees[this.noteToCheck]] += 1;
-                this.acertos += 1;
-            }
+            this.possibleAnswersScore[this.notesDegrees[this.noteToCheck]] += 1;
+            this.acertos += 1;
         }
         this.totalPercentage = this.acertos / this.questions * 100;
         this.percentageCorrectAnswers[this.notesDegrees[this.noteToCheck]] = (
@@ -250,10 +264,6 @@ class Game {
     this.#showGuessResult();
     this.considerAnswerToScore[this.noteToCheck] = false;
 
-  }
-
-  #cleanGuessResult() {
-    document.getElementById(`${this.nameId}GuessedAnswer`).textContent = ``;
   }
 
 
@@ -366,4 +376,120 @@ class Game {
     }
 }
 
-export { Game }
+class guessChordNotesGame extends Game {
+    constructor(nameId, title, key) {
+        super(nameId, title);
+        this.key = key;
+        this.title = this.title + ` - ${this.key}`;
+        this.howManyNotes = 1;
+        this.notesDegrees = [];
+
+        this.possibleAnswersScore = {
+            'SecondDegree': 0,
+            'ThirdDegree': 0,
+            'FourthDegree': 0,
+            'FifthDegree': 0,
+            'SixthDegree': 0,
+            'SeventhDegree': 0
+        };
+
+        document.getElementById(`${this.nameId}Title`).textContent = this.title;
+    }
+
+    beginRound() {
+        const possibleNotes = this.key.scale.scaleNotes.filter(note => note.frequency != this.key.scale.firstNote.frequency)
+        super.beginRound(possibleNotes);
+        this.#getAnswerDegrees();
+        this.playChordToGuess();
+    }
+
+    updateNumberOfNotes(howManyNotes) {
+        this.howManyNotes = howManyNotes;
+    }
+
+    playChordToGuess() {
+        const duration = parseFloat(document.getElementById(`${this.nameId}DurationChordToGuess`).value);
+        const volume = parseFloat(document.getElementById('volume').value)/100;
+
+        this.key.scale.firstNote.play(window.player, volume, duration);
+        this.notesToGuess.forEach((note, index) => {
+            note.play(window.player, volume, duration);
+        });
+    }
+    
+    playBaseChord() {
+        const duration = parseFloat(document.getElementById(`${this.nameId}DurationBaseChord`).value);
+        const volume = parseFloat(document.getElementById('volume').value)/100;
+        this.key.harmonicField.chords[0].play(window.player, volume, duration);
+        }
+
+    checkNoteAnswer(guessedDegree) {
+        this.correctAnswer = this.notesDegrees.includes(guessedDegree);
+
+        this.questions += 1;
+        if (this.correctAnswer) {
+            this.possibleAnswersScore[guessedDegree] += 1;
+            this.acertos += 1;
+        }
+
+        // if (this.considerAnswerToScore[this.noteToCheck]) {
+        //     this.questions += 1;
+        //     this.possibleAnswersCount[this.notesDegrees[this.noteToCheck]] += 1;
+        //     if (this.correctAnswer) {
+        //         this.possibleAnswersScore[this.notesDegrees[this.noteToCheck]] += 1;
+        //         this.acertos += 1;
+        //     }
+        //     this.totalPercentage = this.acertos / this.questions * 100;
+        //     this.percentageCorrectAnswers[this.notesDegrees[this.noteToCheck]] = (
+        //         this.possibleAnswersScore[this.notesDegrees[this.noteToCheck]] / this.possibleAnswersCount[this.notesDegrees[this.noteToCheck]]) * 100;
+        // }
+
+        this.#showGuessResult();
+        this.#updateScore();
+        this.considerAnswerToScore[this.noteToCheck] = false;
+
+    }
+
+
+    #showGuessResult() {
+        if (this.correctAnswer) {
+            document.getElementById(`${this.nameId}GuessedAnswer`).textContent = `Resposta Correta! A nota está presente no acorde.`;
+        } else {
+            document.getElementById(`${this.nameId}GuessedAnswer`).textContent = `Resposta Errada!`;
+        }
+    }
+
+
+    #getAnswerDegrees() {
+        this.notesDegrees = []
+        this.notesIndex.forEach((noteIndex) => {
+            if (noteIndex === 0) {
+                this.notesDegrees = this.notesDegrees.concat(['SecondDegree']);
+            } else if (noteIndex === 1) {
+                this.notesDegrees = this.notesDegrees.concat(['ThirdDegree']);
+            } else if (noteIndex === 2) {
+                this.notesDegrees = this.notesDegrees.concat(['FourthDegree']);
+            } else if (noteIndex === 3 ) {
+                this.notesDegrees = this.notesDegrees.concat(['FifthDegree']);
+            } else if (noteIndex === 4) {
+                this.notesDegrees = this.notesDegrees.concat(['SixthDegree']);
+            } else if (noteIndex === 5) {
+                this.notesDegrees = this.notesDegrees.concat(['SeventhDegree']);
+            }
+            
+        });
+    }
+
+
+    #updateScore() {
+        this.notesDegrees.forEach((degree) => {
+            document.getElementById(`${this.nameId}${degree}Score`).textContent = this.possibleAnswersScore[degree];
+
+            document.getElementById(`${this.nameId}TotalScore`).textContent = this.acertos;
+            document.getElementById(`${this.nameId}TotalGuesses`).textContent = this.questions;
+        });
+    }
+    
+}
+
+export { guessNoteDegree, guessChordNotesGame }
