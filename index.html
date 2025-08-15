@@ -378,8 +378,8 @@ tbody tr:nth-child(even) {
             <tr>
               <th>Grau</th>
               <th>Acertos</th>
-              <th>Total de Tentativas</th>
-              <th>Percentual</th>
+              <th>Tentativas</th>
+              <th>Aproveitamento</th>
             </tr>
           </thead>
           <tbody>
@@ -469,7 +469,7 @@ tbody tr:nth-child(even) {
           </select>
         </div>
         <div class="flex-container">
-          <p>Quantidade de notas sorteadas</p>
+          <p>Quantidade máxima de notas sorteadas</p>
           <select onchange="guessChordNotesGame.updateNumberOfNotes(parseInt(this.value))" id="gcnGameHowManyNotes">
             <option value=1>1</option>
             <option value=2>2</option>
@@ -478,7 +478,7 @@ tbody tr:nth-child(even) {
             <option value=5>5</option>
           </select>
         </div>
-        <div id="gcnGameDegreeSelection" class="flex-container" onchange="guessChordNotesGame.updatePossibleNotes()">
+        <div id="gcnGameDegreeSelection" onchange="guessChordNotesGame.updatePossibleNotes()">
           <p>Notas que podem compor os acordes sorteados</p>
           <div>
             <label><input class="gcnGameDegrees" type="checkbox" name="1"/>2º</label>
@@ -499,7 +499,7 @@ tbody tr:nth-child(even) {
           <button onclick="guessChordNotesGame.beginRound()">Sortear acorde</button>
         </div>
       <div id="answerField"style="margin-top: 30px;">
-        <h3>Quais notas compõem o acorde?</h3>
+        <h3>Quais notas, além da fundamental, compõem o acorde?</h3>
         <div id="gcnGameGuessedAnswer"></div>
         <div id="repeatControls">
           <button onclick="guessChordNotesGame.playBaseChord()" title="Tocar o acorde de referência">
@@ -507,25 +507,31 @@ tbody tr:nth-child(even) {
               <path d="M8.5 1A4.5 4.5 0 0 0 4 5.5v7.047a2.453 2.453 0 0 0 4.75.861l.512-1.363a5.6 5.6 0 0 1 .816-1.46l2.008-2.581A4.34 4.34 0 0 0 8.66 1zM3 5.5A5.5 5.5 0 0 1 8.5 0h.16a5.34 5.34 0 0 1 4.215 8.618l-2.008 2.581a4.6 4.6 0 0 0-.67 1.197l-.51 1.363A3.453 3.453 0 0 1 3 12.547zM8.5 4A1.5 1.5 0 0 0 7 5.5v2.695q.168-.09.332-.192c.327-.208.577-.44.72-.727a.5.5 0 1 1 .895.448c-.256.513-.673.865-1.079 1.123A9 9 0 0 1 7 9.313V11.5a.5.5 0 0 1-1 0v-6a2.5 2.5 0 0 1 5 0V6a.5.5 0 0 1-1 0v-.5A1.5 1.5 0 0 0 8.5 4"/>
             </svg>
           </button>
-          <button onclick="guessChordNotesGame.playChordToGuess()" title="Tocar a(s) nota(s) sorteada(s) novamente">
+          <button onclick="guessChordNotesGame.playChordToGuess()" title="Tocar o acorde novamente">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-repeat" viewBox="0 0 16 16">
               <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>
-            </svg></button>
+            </svg>
+          </button>
+          <button onclick="guessChordNotesGame.playChordToGuessAscending()" title="Tocar as notas individualmente">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reception-4" viewBox="0 0 16 16">
+              <path d="M0 11.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </button>
         </div>
         <div id="gcnGameSelectNoteToCheck" style="margin-top: 10px;"></div>
         <div class="flex-container">
-        <button id="gcnGame2Button" onclick="guessChordNotesGame.checkNoteAnswer(1, this.id)">2º</button>
-        <button id="gcnGame3Button" onclick="guessChordNotesGame.checkNoteAnswer(2, this.id)">3º</button>
-        <button id="gcnGame4Button" onclick="guessChordNotesGame.checkNoteAnswer(3, this.id)">4º</button>
-        <button id="gcnGame5Button" onclick="guessChordNotesGame.checkNoteAnswer(4, this.id)">5º</button>
-        <button id="gcnGame6Button" onclick="guessChordNotesGame.checkNoteAnswer(5, this.id)">6º</button>
+        <button id="gcnGame2Button" onclick="guessChordNotesGame.checkNoteAnswer(1)">2º</button>
+        <button id="gcnGame3Button" onclick="guessChordNotesGame.checkNoteAnswer(2)">3º</button>
+        <button id="gcnGame4Button" onclick="guessChordNotesGame.checkNoteAnswer(3)">4º</button>
+        <button id="gcnGame5Button" onclick="guessChordNotesGame.checkNoteAnswer(4)">5º</button>
+        <button id="gcnGame6Button" onclick="guessChordNotesGame.checkNoteAnswer(5)">6º</button>
         </div>
         <div class="flex-container">
-        <button id="gcnGame7Button" onclick="guessChordNotesGame.checkNoteAnswer(6, this.id)">7º</button>
-        <button id="gcnGame8Button" onclick="guessChordNotesGame.checkNoteAnswer(7, this.id)">8º</button>
-        <button id="gcnGame9Button" onclick="guessChordNotesGame.checkNoteAnswer(8, this.id)">9º</button>
-        <button id="gcnGame10Button" onclick="guessChordNotesGame.checkNoteAnswer(9, this.id)">11º</button>
-        <button id="gcnGame12Button" onclick="guessChordNotesGame.checkNoteAnswer(11, this.id)">13º</button>
+        <button id="gcnGame7Button" onclick="guessChordNotesGame.checkNoteAnswer(6)">7º</button>
+        <button id="gcnGame8Button" onclick="guessChordNotesGame.checkNoteAnswer(7)">8º</button>
+        <button id="gcnGame9Button" onclick="guessChordNotesGame.checkNoteAnswer(8)">9º</button>
+        <button id="gcnGame10Button" onclick="guessChordNotesGame.checkNoteAnswer(9)">11º</button>
+        <button id="gcnGame12Button" onclick="guessChordNotesGame.checkNoteAnswer(11)">13º</button>
         </div>
       </div>
       <div id="scoreField" style="margin-top: 15px;">
@@ -534,75 +540,75 @@ tbody tr:nth-child(even) {
             <tr>
               <th>Grau</th>
               <th>Acertos</th>
-              <th>Erros</th>
-              <th>Aproveitamento de tentativas</th>
+              <th>Tentativas</th>
+              <th>Aproveitamento</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>2º</td>
-              <td id="gcnGame1Correct">0</td>
-              <td id="gcnGame1Wrong">0</td>
+              <td id="gcnGame1Score">0</td>
+              <td id="gcnGame1Total">0</td>
               <td id="gcnGame1Percentage">0.00%</td>
             </tr>
             <tr>
               <td>3º</td>
-              <td id="gcnGame2Correct">0</td>
-              <td id="gcnGame2Wrong">0</td>
+              <td id="gcnGame2Score">0</td>
+              <td id="gcnGame2Total">0</td>
               <td id="gcnGame2Percentage">0.00%</td>
             </tr>
             <tr>
               <td>4º</td>
-              <td id="gcnGame3Correct">0</td>
-              <td id="gcnGame3Wrong">0</td>
+              <td id="gcnGame3Score">0</td>
+              <td id="gcnGame3Total">0</td>
               <td id="gcnGame3Percentage">0.00%</td>
             </tr>
             <tr>
               <td>5º</td>
-              <td id="gcnGame4Correct">0</td>
-              <td id="gcnGame4Wrong">0</td>
+              <td id="gcnGame4Score">0</td>
+              <td id="gcnGame4Total">0</td>
               <td id="gcnGame4Percentage">0.00%</td>
             </tr>
             <tr>
               <td>6º</td>
-              <td id="gcnGame5Correct">0</td>
-              <td id="gcnGame5Wrong">0</td>
+              <td id="gcnGame5Score">0</td>
+              <td id="gcnGame5Total">0</td>
               <td id="gcnGame5Percentage">0.00%</td>
             </tr>
             <tr>
               <td>7º</td>
-              <td id="gcnGame6Correct">0</td>
-              <td id="gcnGame6Wrong">0</td>
+              <td id="gcnGame6Score">0</td>
+              <td id="gcnGame6Total">0</td>
               <td id="gcnGame6Percentage">0.00%</td>
             </tr>
             <tr>
               <td>8º</td>
-              <td id="gcnGame7Correct">0</td>
-              <td id="gcnGame7Wrong">0</td>
+              <td id="gcnGame7Score">0</td>
+              <td id="gcnGame7Total">0</td>
               <td id="gcnGame7Percentage">0.00%</td>
             </tr>
             <tr>
               <td>9º</td>
-              <td id="gcnGame8Correct">0</td>
-              <td id="gcnGame8Wrong">0</td>
+              <td id="gcnGame8Score">0</td>
+              <td id="gcnGame8Total">0</td>
               <td id="gcnGame8Percentage">0.00%</td>
             </tr>
             <tr>
               <td>11º</td>
-              <td id="gcnGame10Correct">0</td>
-              <td id="gcnGame10Wrong">0</td>
+              <td id="gcnGame10Score">0</td>
+              <td id="gcnGame10Total">0</td>
               <td id="gcnGame10Percentage">0.00%</td>
             </tr>
             <tr>
               <td>13º</td>
-              <td id="gcnGame12Correct">0</td>
-              <td id="gcnGame12Wrong">0</td>
+              <td id="gcnGame12Score">0</td>
+              <td id="gcnGame12Total">0</td>
               <td id="gcnGame12Percentage">0.00%</td>
             </tr>
             <tr>
               <td>Total</td>
-              <td id="gcnGameTotalCorrect">0</td>
-              <td id="gcnGameTotalWrong">0</td>
+              <td id="gcnGameScore">0</td>
+              <td id="gcnGameTotal">0</td>
               <td id="gcnGamePercentage">0.00%</td>
             </tr>
           </tbody>

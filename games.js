@@ -198,7 +198,7 @@ class guessNoteDegree extends Game {
         const td = document.createElement("td");
         const radio = document.createElement("input");
         radio.type = "radio";
-        radio.name = "how-many-notes";
+        radio.name = `${this.nameId}how-many-notes`;
         radio.onclick = () => this.updateNoteToCheck(i);
         if (i === this.noteToCheck) {
             radio.checked = true;
@@ -278,7 +278,7 @@ class guessNoteDegree extends Game {
   #updateScore() {
     this.notesDegrees.forEach((degree) => {
         document.getElementById(`${this.nameId}${degree}Score`).textContent = this.possibleAnswersScore[degree];
-        document.getElementById(`${this.nameId}${degree}Total`).textContent = this.possibleAnswersCount[degree]
+        document.getElementById(`${this.nameId}${degree}Total`).textContent = this.possibleAnswersCount[degree];
         document.getElementById(`${this.nameId}${degree}Percentual`).textContent = this.percentageCorrectAnswers[degree].toFixed(2) + '%';
 
         document.getElementById(`${this.nameId}TotalScore`).textContent = this.acertos;
@@ -382,8 +382,12 @@ class guessChordNotesGame extends Game {
         this.key = key;
         this.title = this.title + ` - ${this.key}`;
         this.howManyNotes = 1;
-        this.erros = 0;
-        this.drawnIndexes = [];
+        this.noteToCheck = 0;
+        this.acertos = 0;
+        this.questions = 0;
+        this.considerAnswerToScore = [];
+        this.notesToGuess = [];
+        this.totalPercentage = 0.0;
 
         this.possibleNotes = [];
         this.updatePossibleNotes();
@@ -391,7 +395,7 @@ class guessChordNotesGame extends Game {
             1, 2, 3, 4, 5, 6, 7, 8, 10, 12
         ]
 
-        this.correctAnswers = {
+        this.possibleAnswersScore = {
             1: 0,
             2: 0,
             3: 0,
@@ -403,8 +407,7 @@ class guessChordNotesGame extends Game {
             10: 0,
             12: 0
         };
-
-        this.wrongAnswers = {
+        this.possibleAnswersCount = {
             1: 0,
             2: 0,
             3: 0,
@@ -415,6 +418,18 @@ class guessChordNotesGame extends Game {
             8: 0,
             10: 0,
             12: 0
+        };
+        this.percentageCorrectAnswers = {
+            1: 0.00,
+            2: 0.00,
+            3: 0.00,
+            4: 0.00,
+            5: 0.00,
+            6: 0.00,
+            7: 0.00,
+            8: 0.00,
+            10: 0.00,
+            12: 0.00
         };
 
         document.getElementById(`${this.nameId}Title`).textContent = this.title;
@@ -432,24 +447,23 @@ class guessChordNotesGame extends Game {
     }
 
     beginRound() {
+        if (this.notesToGuess.length > 0) {
+            this.#updateScore();
+        }
         super.beginRound(this.possibleNotes);
-        this.reenableButtons();
-        this.drawnIndexes = this.notesToGuess.map(item => this.key.extendedScale.indexOf(item));
+        this.notesToGuess = [... new Set(this.notesToGuess)];
+        this.notesToGuess = this.notesToGuess.sort((a, b) => a.frequency - b.frequency);
         this.playChordToGuess();
-    }
-
-    reenableButtons() {
-        this.possibleIndexes.forEach((index) => {
-            const button = document.getElementById(`${this.nameId}${index}Button`);
-            if (button) {
-                button.disabled = false;
-                button.style = "cursor: pointer;";
-            }
-        });
+        this.#updateSelectNoteToCheckElements()
     }
 
     updateNumberOfNotes(howManyNotes) {
         this.howManyNotes = howManyNotes;
+    }
+
+    updateNoteToCheck(noteToCheck) {
+        this.noteToCheck = noteToCheck;
+        this.#updateSelectNoteToCheckElements();
     }
 
     playChordToGuess() {
@@ -461,6 +475,18 @@ class guessChordNotesGame extends Game {
             note.play(window.player, volume, duration);
         });
     }
+
+    playChordToGuessAscending() {
+        const duration = parseFloat(document.getElementById(`${this.nameId}DurationChordToGuess`).value);
+        const volume = parseFloat(document.getElementById('volume').value)/100;
+
+        this.key.scale.firstNote.play(window.player, volume, duration);
+        this.notesToGuess.forEach((note, index) => {
+            setTimeout(() => {
+                note.play(window.player, volume, duration);
+            }, (index + 1) * duration * 1000);
+        });
+    }
     
     playBaseChord() {
         const duration = parseFloat(document.getElementById(`${this.nameId}DurationBaseChord`).value);
@@ -468,24 +494,23 @@ class guessChordNotesGame extends Game {
         this.key.harmonicField.chords[0].play(window.player, volume, duration);
         }
 
-    checkNoteAnswer(indexGuessedDegree, buttonId) {
-        const button = document.getElementById(buttonId);
-        button.disabled = true;
-        button.style = "cursor: not-allowed;";
+    checkNoteAnswer(guessedIndex) {
+        this.correctAnswer = (this.notesToGuess[this.noteToCheck] === this.key.extendedScale[guessedIndex]);
+        let correctIndex = this.key.extendedScale.indexOf(this.notesToGuess[this.noteToCheck])
 
-        this.correctAnswer = this.drawnIndexes.includes(indexGuessedDegree);
-
-        this.questions += 1;
-        if (this.correctAnswer) {
-            this.correctAnswers[indexGuessedDegree] += 1;
-            this.acertos += 1;
-        } else {
-            this.wrongAnswers[indexGuessedDegree] += 1;
-            this.erros += 1;
+        if (this.considerAnswerToScore[this.noteToCheck]) {
+            this.questions += 1;
+            this.possibleAnswersCount[correctIndex] += 1;
+            if (this.correctAnswer) {
+                this.possibleAnswersScore[correctIndex] += 1;
+                this.acertos += 1;
+            }
+            this.totalPercentage = this.acertos / this.questions * 100;
+            this.percentageCorrectAnswers[correctIndex] = (
+                this.possibleAnswersScore[correctIndex] / this.possibleAnswersCount[correctIndex]) * 100;
         }
 
         this.#showGuessResult();
-        this.#updateScore();
         this.considerAnswerToScore[this.noteToCheck] = false;
 
     }
@@ -502,14 +527,62 @@ class guessChordNotesGame extends Game {
 
     #updateScore() {
         this.possibleIndexes.forEach((index) => {
-            document.getElementById(`${this.nameId}${index}Correct`).textContent = this.correctAnswers[index];
-            document.getElementById(`${this.nameId}${index}Wrong`).textContent = this.wrongAnswers[index];
-            document.getElementById(`${this.nameId}${index}Percentage`).textContent = ((this.correctAnswers[index] / (this.correctAnswers[index] + this.wrongAnswers[index])) * 100).toFixed(2) + "%";
+            document.getElementById(`${this.nameId}${index}Score`).textContent = this.possibleAnswersScore[index];
+            document.getElementById(`${this.nameId}${index}Total`).textContent = this.possibleAnswersCount[index];
+            document.getElementById(`${this.nameId}${index}Percentage`).textContent = this.percentageCorrectAnswers[index] .toFixed(2) + "%";
 
-            document.getElementById(`${this.nameId}TotalCorrect`).textContent = this.acertos;
-            document.getElementById(`${this.nameId}TotalWrong`).textContent = this.erros;
-            document.getElementById(`${this.nameId}Percentage`).textContent = ((this.acertos / (this.acertos + this.erros)) * 100).toFixed(2) + "%";
+            document.getElementById(`${this.nameId}Score`).textContent = this.acertos;
+            document.getElementById(`${this.nameId}Total`).textContent = this.questions;
+            document.getElementById(`${this.nameId}Percentage`).textContent = this.totalPercentage.toFixed(2) + '%';
         });
+    }
+
+
+  #updateSelectNoteToCheckElements() {
+    const container = document.getElementById(`${this.nameId}SelectNoteToCheck`);
+    container.innerHTML = '';
+    const table = document.createElement("table");
+    table.border = 1;
+    
+    const headerRow = document.createElement("tr");
+    const radioRow = document.createElement("tr");
+
+    for (let i = 0; i < this.notesToGuess.length; i++) {
+        // cabeçalho
+        const th = document.createElement("th");
+
+        // wrapper flexível
+        const headerContent = document.createElement("div");
+        headerContent.style.display = "flex";
+        headerContent.style.alignItems = "center";
+        headerContent.style.justifyContent = "space-between";
+        headerContent.style.gap = "6px"; // espaço entre texto e botão
+        headerContent.style.whiteSpace = "nowrap"; // evita quebrar linha
+
+        const label = document.createElement("span");
+        label.innerText = `${i + 2}ª Nota`;
+        headerContent.appendChild(label);
+
+        th.appendChild(headerContent);
+        headerRow.appendChild(th);
+
+        // input radio
+        const td = document.createElement("td");
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = `${this.nameId}how-many-notes`;
+        radio.onclick = () => this.updateNoteToCheck(i);
+        if (i === this.noteToCheck) {
+            radio.checked = true;
+        }
+        td.appendChild(radio);
+        radioRow.appendChild(td);
+    }
+
+
+    table.appendChild(headerRow);
+    table.appendChild(radioRow);
+    container.appendChild(table);
     }
     
 }
