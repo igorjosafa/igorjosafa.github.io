@@ -311,9 +311,9 @@ class guessNoteDegree extends Game {
       const volume = parseFloat(document.getElementById('volume').value)/100;
       let notes;
 
-      if (this.notesIndex[this.noteToCheck] <= 6) {
+      if (this.notesIndex[this.noteToCheck] <= 7) {
         notes = this.key.extendedScale.slice(0, this.notesIndex[this.noteToCheck] + 1);
-      } else if (this.notesIndex[this.noteToCheck] <= 13) {
+      } else if (this.notesIndex[this.noteToCheck] <= 14) {
         notes = this.key.extendedScale.slice(7, this.notesIndex[this.noteToCheck] + 1);
       } else {
         notes = this.key.extendedScale.slice(14, this.notesIndex[this.noteToCheck] + 1);
@@ -330,12 +330,12 @@ class guessNoteDegree extends Game {
       const volume = parseFloat(document.getElementById('volume').value)/100;
       let notes;
 
-      if (this.notesIndex[this.noteToCheck] <= 6) {
+      if (this.notesIndex[this.noteToCheck] <= 7) {
         notes = this.key.extendedScale.slice(this.notesIndex[this.noteToCheck], 8);
-      } else if (this.notesIndex[this.noteToCheck] <= 13) {
+      } else if (this.notesIndex[this.noteToCheck] <= 14) {
         notes = this.key.extendedScale.slice(this.notesIndex[this.noteToCheck], 15);
       } else {
-        notes = this.key.extendedScale.slice(this.notesIndex[this.noteToCheck], 22);
+        notes = this.key.extendedScale.slice(this.notesIndex[this.noteToCheck]);
       }
       notes.forEach((note, index) => {
         setTimeout(() => {
@@ -358,7 +358,7 @@ class guessNoteDegree extends Game {
             notes = notes.concat(this.key.extendedScale[i])
         }
       } else {
-        for (let i=this.notesIndex[this.noteToCheck]; i>=15; i--) {
+        for (let i=this.notesIndex[this.noteToCheck]; i>=14; i--) {
             notes = notes.concat(this.key.extendedScale[i])
         }
       }
