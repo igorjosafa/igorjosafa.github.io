@@ -7,6 +7,10 @@ class Game {
         this.acertos = 0;
         this.questions = 0;
         this.totalPercentage = 0.0;
+        this.rodadas = 0;
+        this.allCorrect = true;
+        this.rodadasAllCorrect = 0;
+        this.rodadaAnsweredQuestions = 0;
     }
 
     #getRandomNotes(possibleNotes) {
@@ -41,6 +45,18 @@ class Game {
     beginRound(possibleNotes) {
         this.#endPreviousRound();
         this.#selectNewNotes(possibleNotes);
+        this.#disableNewDraw();
+        this.rodadas += 1;
+        this.rodadaAnsweredQuestions = 0;
+        this.allCorrect = true;
+    }
+
+    enableNewDraw() {
+        document.getElementById(`${this.nameId}NewDraw`).disabled = false;
+    }
+
+    #disableNewDraw() {
+        document.getElementById(`${this.nameId}NewDraw`).disabled = true;
     }
 
     #selectNewNotes(possibleNotes) {
@@ -252,19 +268,32 @@ class guessNoteDegree extends Game {
 
     if (this.considerAnswerToScore[this.noteToCheck]) {
         this.questions += 1;
+        this.rodadaAnsweredQuestions += 1;
         this.possibleAnswersCount[this.notesDegrees[this.noteToCheck]] += 1;
         if (this.correctAnswer) {
             this.possibleAnswersScore[this.notesDegrees[this.noteToCheck]] += 1;
             this.acertos += 1;
+        } else {
+            this.allCorrect = false;
         }
         this.totalPercentage = this.acertos / this.questions * 100;
         this.percentageCorrectAnswers[this.notesDegrees[this.noteToCheck]] = (
             this.possibleAnswersScore[this.notesDegrees[this.noteToCheck]] / this.possibleAnswersCount[this.notesDegrees[this.noteToCheck]]) * 100;
+
+        if (this.rodadaAnsweredQuestions === this.notesToGuess.length) {
+            this.enableNewDraw()
+
+            if (this.allCorrect) {
+                this.rodadasAllCorrect += 1;
+            }
+
+            this.#showAllCorrect()
+        }
     }
 
     this.#showGuessResult();
-    this.#changeToNextNote();
     this.considerAnswerToScore[this.noteToCheck] = false;
+    this.#changeToNextNote();
 
   }
 
@@ -276,6 +305,9 @@ class guessNoteDegree extends Game {
     }
   }
 
+    #showAllCorrect() {
+        document.getElementById(`${this.nameId}AllCorrect`).textContent = `Rodadas sem erro: ${this.rodadasAllCorrect} / ${this.rodadas}`;
+    }
 
   #showGuessResult() {
     if (this.correctAnswer) {
@@ -510,19 +542,33 @@ class guessChordNotesGame extends Game {
 
         if (this.considerAnswerToScore[this.noteToCheck]) {
             this.questions += 1;
+            this.rodadaAnsweredQuestions += 1;
             this.possibleAnswersCount[correctIndex] += 1;
             if (this.correctAnswer) {
                 this.possibleAnswersScore[correctIndex] += 1;
                 this.acertos += 1;
+            } else {
+                this.allCorrect = false;
             }
             this.totalPercentage = this.acertos / this.questions * 100;
             this.percentageCorrectAnswers[correctIndex] = (
                 this.possibleAnswersScore[correctIndex] / this.possibleAnswersCount[correctIndex]) * 100;
+
+            
+            if (this.rodadaAnsweredQuestions === this.notesToGuess.length) {
+                this.enableNewDraw()
+
+                if (this.allCorrect) {
+                    this.rodadasAllCorrect += 1;
+                }
+
+                this.#showAllCorrect()
+            }
         }
 
         this.#showGuessResult();
-        this.#changeToNextNote();
         this.considerAnswerToScore[this.noteToCheck] = false;
+        this.#changeToNextNote();
 
     }
 
@@ -532,6 +578,10 @@ class guessChordNotesGame extends Game {
         } else if (this.correctAnswer) {
             document.getElementById(`${this.nameId}NoteToCheck0`).click();
         }
+    }
+
+    #showAllCorrect() {
+        document.getElementById(`${this.nameId}AllCorrect`).textContent = `Rodadas sem erro: ${this.rodadasAllCorrect} / ${this.rodadas}`;
     }
 
 

@@ -107,6 +107,11 @@ tbody tr:nth-child(even) {
       background: 	#A3684B;
     }
 
+    button:disabled,
+    button[disabled]{
+      background: #E7D3C8;
+    }
+
     #selectScaleNote button,
     #harmonicField button,
     #answerField button {
@@ -369,10 +374,11 @@ tbody tr:nth-child(even) {
         <button onclick="guessNoteDegreeGame.checkNoteAnswer('SeventhDegree')">Sensível</button>
         </div>
       </div>
-        <div class="flex-container" style="margin-top: 30px;">
-          <button onclick="guessNoteDegreeGame.beginRound()">Sortear nota (s)</button>
-        </div>
+      <div class="flex-container" style="margin-top: 30px;">
+        <button id="gndGameNewDraw" onclick="guessNoteDegreeGame.beginRound()">Sortear nota (s)</button>
+      </div>
       <div id="scoreField" style="margin-top: 15px;">
+        <div id="gndGameAllCorrect"></div>
         <table>
           <thead>
             <tr>
@@ -531,10 +537,11 @@ tbody tr:nth-child(even) {
         <button id="gcnGame12Button" onclick="guessChordNotesGame.checkNoteAnswer(12)">13º</button>
         </div>
       </div>
-        <div class="flex-container" style="margin-top: 30px;">
-          <button onclick="guessChordNotesGame.beginRound()">Sortear acorde</button>
-        </div>
+      <div class="flex-container" style="margin-top: 30px;">
+        <button id="gcnGameNewDraw" onclick="guessChordNotesGame.beginRound()">Sortear acorde</button>
+      </div>
       <div id="scoreField" style="margin-top: 15px;">
+        <div id="gcnGameAllCorrect"></div>
         <table>
           <thead>
             <tr>
