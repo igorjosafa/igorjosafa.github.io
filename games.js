@@ -62,7 +62,7 @@ class guessNoteDegree extends Game {
   constructor(nameId, title, key) {
     super(nameId, title);
     this.key = key;
-    this.title = super.title + ` - ${this.key}`;
+    this.title = this.title + ` - ${this.key}`;
     this.possibleAnswersScore = {
         'FirstDegree': 0,
         'SecondDegree': 0,
