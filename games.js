@@ -198,7 +198,8 @@ class guessNoteDegree extends Game {
         const td = document.createElement("td");
         const radio = document.createElement("input");
         radio.type = "radio";
-        radio.name = `${this.nameId}how-many-notes`;
+        radio.name = `${this.nameId}NoteToCheck`;
+        radio.id = `${this.nameId}NoteToCheck${i}`;
         radio.onclick = () => this.updateNoteToCheck(i);
         if (i === this.noteToCheck) {
             radio.checked = true;
@@ -262,8 +263,17 @@ class guessNoteDegree extends Game {
     }
 
     this.#showGuessResult();
+    this.#changeToNextNote();
     this.considerAnswerToScore[this.noteToCheck] = false;
 
+  }
+
+  #changeToNextNote() {
+    if (this.correctAnswer && this.noteToCheck < this.notesToGuess.length - 1) {
+        document.getElementById(`${this.nameId}NoteToCheck${this.noteToCheck + 1}`).click();
+    } else if (this.correctAnswer) {
+        document.getElementById(`${this.nameId}NoteToCheck0`).click();
+    }
   }
 
 
@@ -511,8 +521,17 @@ class guessChordNotesGame extends Game {
         }
 
         this.#showGuessResult();
+        this.#changeToNextNote();
         this.considerAnswerToScore[this.noteToCheck] = false;
 
+    }
+
+    #changeToNextNote() {
+        if (this.correctAnswer && this.noteToCheck < this.notesToGuess.length - 1) {
+            document.getElementById(`${this.nameId}NoteToCheck${this.noteToCheck + 1}`).click();
+        } else if (this.correctAnswer) {
+            document.getElementById(`${this.nameId}NoteToCheck0`).click();
+        }
     }
 
 
@@ -570,7 +589,8 @@ class guessChordNotesGame extends Game {
         const td = document.createElement("td");
         const radio = document.createElement("input");
         radio.type = "radio";
-        radio.name = `${this.nameId}how-many-notes`;
+        radio.name = `${this.nameId}NoteToCheck`;
+        radio.id = `${this.nameId}NoteToCheck${i}`;
         radio.onclick = () => this.updateNoteToCheck(i);
         if (i === this.noteToCheck) {
             radio.checked = true;
