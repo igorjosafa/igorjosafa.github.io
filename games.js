@@ -12,6 +12,7 @@ class Game {
         this.rodadasAllCorrect = 0;
         this.rodadaAnsweredQuestions = 0;
         this.streak = 0;
+        this.longestStreak = 0;
     }
 
     #getRandomNotes(possibleNotes) {
@@ -74,7 +75,8 @@ class Game {
     }
 
     showStreak() {
-        document.getElementById(`${this.nameId}Streak`).textContent = `Sequência de acertos: ${this.streak}`;
+        document.getElementById(`${this.nameId}Streak`).textContent = `Sequência de acertos atual: ${this.streak}`;
+        document.getElementById(`${this.nameId}LongestStreak`).textContent = `Maior sequência de acertos: ${this.longestStreak}`;
     }
 
     showAllCorrect() {
@@ -295,6 +297,9 @@ class guessNoteDegree extends Game {
             if (this.allCorrect) {
                 this.rodadasAllCorrect += 1;
                 this.streak += 1;
+                if (this.streak > this.longestStreak) {
+                    this.longestStreak = this.streak;
+                }
             } else {
                 this.streak = 0;
             }
@@ -570,6 +575,9 @@ class guessChordNotesGame extends Game {
                 if (this.allCorrect) {
                     this.rodadasAllCorrect += 1;
                     this.streak += 1;
+                    if (this.streak > this.longestStreak) {
+                        this.longestStreak = this.streak;
+                    }
                 } else {
                     this.streak = 0;
                 }
