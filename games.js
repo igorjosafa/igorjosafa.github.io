@@ -11,6 +11,7 @@ class Game {
         this.allCorrect = true;
         this.rodadasAllCorrect = 0;
         this.rodadaAnsweredQuestions = 0;
+        this.streak = 0;
     }
 
     #getRandomNotes(possibleNotes) {
@@ -70,6 +71,14 @@ class Game {
 
     #cleanGuessResult() {
         document.getElementById(`${this.nameId}GuessedAnswer`).textContent = ``;
+    }
+
+    showStreak() {
+        document.getElementById(`${this.nameId}Streak`).textContent = `Sequência de acertos: ${this.streak}`;
+    }
+
+    showAllCorrect() {
+        document.getElementById(`${this.nameId}AllCorrect`).textContent = `Rodadas sem erros: ${this.rodadasAllCorrect} / ${this.rodadas}`;
     }
 }
 
@@ -285,13 +294,17 @@ class guessNoteDegree extends Game {
 
             if (this.allCorrect) {
                 this.rodadasAllCorrect += 1;
+                this.streak += 1;
+            } else {
+                this.streak = 0;
             }
 
-            this.#showAllCorrect()
+            this.showAllCorrect()
         }
     }
 
     this.#showGuessResult();
+    this.showStreak();
     this.considerAnswerToScore[this.noteToCheck] = false;
     this.#changeToNextNote();
 
@@ -304,10 +317,6 @@ class guessNoteDegree extends Game {
         document.getElementById(`${this.nameId}NoteToCheck0`).click();
     }
   }
-
-    #showAllCorrect() {
-        document.getElementById(`${this.nameId}AllCorrect`).textContent = `Rodadas sem erro: ${this.rodadasAllCorrect} / ${this.rodadas}`;
-    }
 
   #showGuessResult() {
     if (this.correctAnswer) {
@@ -560,13 +569,17 @@ class guessChordNotesGame extends Game {
 
                 if (this.allCorrect) {
                     this.rodadasAllCorrect += 1;
+                    this.streak += 1;
+                } else {
+                    this.streak = 0;
                 }
 
-                this.#showAllCorrect()
+                this.showAllCorrect()
             }
         }
 
         this.#showGuessResult();
+        this.showStreak();
         this.considerAnswerToScore[this.noteToCheck] = false;
         this.#changeToNextNote();
 
@@ -579,11 +592,6 @@ class guessChordNotesGame extends Game {
             document.getElementById(`${this.nameId}NoteToCheck0`).click();
         }
     }
-
-    #showAllCorrect() {
-        document.getElementById(`${this.nameId}AllCorrect`).textContent = `Rodadas sem erro: ${this.rodadasAllCorrect} / ${this.rodadas}`;
-    }
-
 
     #showGuessResult() {
         if (this.correctAnswer) {
