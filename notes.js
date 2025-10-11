@@ -5,8 +5,8 @@ class Note {
         this.frequency = frequency;
     }
 
-    play(player, volume, duration) {
-        player.playNote(this.frequency, volume, duration);
+    play(player, volume, duration, octaveShifter=1) {
+        player.playNote(this.frequency * octaveShifter, volume, duration);
     }
 }
 

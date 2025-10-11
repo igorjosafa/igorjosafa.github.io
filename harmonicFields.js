@@ -5,9 +5,9 @@ class Chord {
         this.notes = notes;
     }
 
-    play(player, volume, duration) {
+    play(player, volume, duration, octaveShifter=1) {
         this.notes.forEach((note) => {
-            note.play(player, volume, duration)
+            note.play(player, volume, duration, octaveShifter)
         });
     }
 }

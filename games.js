@@ -938,10 +938,22 @@ class harmonicProgressionGame extends Game {
       const duration = parseFloat(document.getElementById(`${this.nameId}DurationPerChord`).value);
       const volume = parseFloat(document.getElementById('volume').value)/100;
 
+      const octaveShifter = document.querySelector('.octaveShifter:checked');
+
       this.notesIndex.forEach((index, time) => {
-        setTimeout(() => {
-            this.key.harmonicField.chords[index % 7].play(window.player, volume, duration);
-        }, time * duration * 1000);
+        if (time === 1 && octaveShifter) {
+            setTimeout(() => {
+                this.key.harmonicField.chords[index % 7].play(window.player, volume, duration, 2);
+            }, time * duration * 1000);
+        } else if (time === 3 && octaveShifter) {
+            setTimeout(() => {
+                this.key.harmonicField.chords[index % 7].play(window.player, volume, duration, 0.5);
+            }, time * duration * 1000);
+        } else {
+            setTimeout(() => {
+                this.key.harmonicField.chords[index % 7].play(window.player, volume, duration);
+            }, time * duration * 1000);
+        }
       });
   }
 
