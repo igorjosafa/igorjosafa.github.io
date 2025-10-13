@@ -727,6 +727,8 @@ class harmonicProgressionGame extends Game {
     this.#updateSelectNoteToCheckElements();
 
     this.#updateTitleElement();
+
+    this.asyncIds = [];
   }
 
   updateNoteToCheck(noteToCheck) {
@@ -927,10 +929,23 @@ class harmonicProgressionGame extends Game {
       const duration = parseFloat(document.getElementById(`${this.nameId}DurationPerChord`).value);
       const volume = parseFloat(document.getElementById('volume').value)/100;
 
+      const octaveShifter = document.querySelector('.octaveShifter:checked');
+
       this.key.harmonicField.chords.forEach(element => {
-        if (this.notesToGuess[this.noteToCheck].name === element.notes[0].name) {
-          element.play(window.player, volume, duration);
+        if (this.noteToCheck % 2 === 1 && octaveShifter) {
+            if (this.notesToGuess[this.noteToCheck].name === element.notes[0].name) {
+                element.play(window.player, volume, duration, 2);
+            }
+        } else if (this.noteToCheck % 2 === 0 && octaveShifter) {
+            if (this.notesToGuess[this.noteToCheck].name === element.notes[0].name) {
+                element.play(window.player, volume, duration, 0.5);
+            }
+        } else {
+            if (this.notesToGuess[this.noteToCheck].name === element.notes[0].name) {
+                element.play(window.player, volume, duration);
+            }
         }
+        
       });
   }
 
@@ -940,19 +955,25 @@ class harmonicProgressionGame extends Game {
 
       const octaveShifter = document.querySelector('.octaveShifter:checked');
 
+      if (this.asyncIds.length > 0) {
+        this.asyncIds.forEach((id) => {
+            clearTimeout(id);
+        });
+      }
+
       this.notesIndex.forEach((index, time) => {
-        if (time === 1 && octaveShifter) {
-            setTimeout(() => {
+        if ((time % 2) === 1 && octaveShifter) {
+            this.asyncIds.push(setTimeout(() => {
                 this.key.harmonicField.chords[index % 7].play(window.player, volume, duration, 2);
-            }, time * duration * 1000);
-        } else if (time === 3 && octaveShifter) {
-            setTimeout(() => {
+            }, time * duration * 1000));
+        } else if ((time % 2) === 0 && octaveShifter) {
+            this.asyncIds.push(setTimeout(() => {
                 this.key.harmonicField.chords[index % 7].play(window.player, volume, duration, 0.5);
-            }, time * duration * 1000);
+            }, time * duration * 1000));
         } else {
-            setTimeout(() => {
+            this.asyncIds.push(setTimeout(() => {
                 this.key.harmonicField.chords[index % 7].play(window.player, volume, duration);
-            }, time * duration * 1000);
+            }, time * duration * 1000));
         }
       });
   }
