@@ -934,7 +934,7 @@ class harmonicProgressionGame extends Game {
       this.key.harmonicField.chords.forEach(element => {
         if (this.noteToCheck % 2 === 1 && octaveShifter) {
             if (this.notesToGuess[this.noteToCheck].name === element.notes[0].name) {
-                element.play(window.player, volume, duration, 2);
+                element.play(window.player, volume*0.6, duration, 2);
             }
         } else if (this.noteToCheck % 2 === 0 && octaveShifter) {
             if (this.notesToGuess[this.noteToCheck].name === element.notes[0].name) {
@@ -964,7 +964,7 @@ class harmonicProgressionGame extends Game {
       this.notesIndex.forEach((index, time) => {
         if ((time % 2) === 1 && octaveShifter) {
             this.asyncIds.push(setTimeout(() => {
-                this.key.harmonicField.chords[index % 7].play(window.player, volume, duration, 2);
+                this.key.harmonicField.chords[index % 7].play(window.player, volume*0.6, duration, 2);
             }, time * duration * 1000));
         } else if ((time % 2) === 0 && octaveShifter) {
             this.asyncIds.push(setTimeout(() => {
