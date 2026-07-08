@@ -22,6 +22,8 @@ class Key {
         this.extendedScale = this.harmonicField.notes;
 
         this.name = `${this.scale.name} (${this.key.toUpperCase()})`.replace('SHARP', '#')
+
+        this.playing = false;
     }
 
     toString() {
@@ -42,6 +44,22 @@ class Key {
 
     playHarmonicFieldDescending(play, volume = 0.5, duration = 0.5) {
         this.harmonicField.playDescending(play, volume, duration)
+    }
+
+    playProgression(play, chords = [], volume = 0.1, duration = 0.5) {
+        if (!this.playing) {
+            this.harmonicField.startLoop(
+                chords,
+                player,
+                volume,
+                duration
+            );
+            this.playing = true;
+            return;
+        }
+
+        this.harmonicField.stop();
+        this.playing = false;
     }
 
 }

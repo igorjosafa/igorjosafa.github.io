@@ -291,6 +291,27 @@ tbody tr:nth-child(even) {
     <div style="margin-top: 15px;">
       <button onclick="playHarmonicField()">Tocar o campo harmônico</button>
       <button onclick="playHarmonicFieldDescending()">Tocar o campo harmônico descendente</button>
+
+      <div class="row">
+        <p>Selecione os acordes para progressão</p>
+        <div class="flex-container" onchange="setProgression()">
+          <div>
+            <label><input class="progChords" type="checkbox" id="includeRoot" name="1" checked/>1º</label>
+            <label><input class="progChords" type="checkbox" id="includeSecond" name="2"/>2º</label>
+            <label><input class="progChords" type="checkbox" id="includeThird" name="3" checked/>3º</label>
+            <label><input class="progChords" type="checkbox" id="includeFourth" name="4"/>4º</label>
+            <label><input class="progChords" type="checkbox" id="includeFifth" name="5" checked/>5º</label>
+            <label><input class="progChords" type="checkbox" id="includeSixth" name="6"/>6º</label>
+            <label><input class="progChords" type="checkbox" id="includeSeventh" name="7"/>7º</label>
+            <label><input class="progChords" type="checkbox" id="includeEighth" name="8"/>8º</label>
+            <label><input class="progChords" type="checkbox" id="includeNinth" name="9"/>9º</label>
+            <label><input class="progChords" type="checkbox" id="includeEleventh" name="11"/>11º</label>
+            <label><input class="progChords" type="checkbox" id="includeThirteenth" name="13"/>13º</label>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="playProgression()">Tocar/parar progressão 1-4-5</button>
     </div>
   </div>
 
@@ -792,6 +813,18 @@ tbody tr:nth-child(even) {
       setKey();
     }
 
+    function setProgChords () {
+      const checkboxes = document.querySelectorAll('.progChords');
+      const progChords = [];
+      checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+          progChords.push(parseInt(checkbox.name));
+        }
+      });
+
+      return progChords;
+    }
+
     function setKey() {
       globalThis.key = new Key(key, mode, degrees, octave);
       globalThis.guessNoteDegreeGame = new guessNoteDegree("gndGame", "Adivinhe o Grau no Campo Harmônico", globalThis.key);
@@ -829,6 +862,12 @@ tbody tr:nth-child(even) {
       const duration = parseFloat(document.getElementById('duration').value);
       const volume = parseFloat(document.getElementById('volume').value)/100;
       globalThis.key.playHarmonicFieldDescending(window.player, volume, duration);
+    }
+
+    window.playProgression = function () {
+      const duration = parseFloat(document.getElementById('duration').value);
+      const volume = parseFloat(document.getElementById('volume').value)/200;
+      globalThis.key.playProgression(window.player, setProgChords(), volume, duration);
     }
 
     window.playSelectedDegree = function (degree) {
